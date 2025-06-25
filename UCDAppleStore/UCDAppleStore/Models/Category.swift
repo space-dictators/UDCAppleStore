@@ -1,10 +1,10 @@
 
 import Foundation
 
-enum Category: Codable {
+enum Category: String, Codable {
     case iPhone
     case iPad
-    case macBook
-    case mac
-    case accessories
+    case macBook = "MacBook"
+    case mac = "Mac"
+    case accessories = "Accessories"
 }
