@@ -5,10 +5,12 @@ import SnapKit
 import Then
 
 class CartView: UIView {
-    var cartViewModel = CartViewModel()
+    private let cartViewModel = CartViewModel()
 
     let totalPriceLabel = UILabel().then {
-        $0.text = "Total Price : $ 1200.00"
+        $0.font = .boldSystemFont(ofSize: 16)
+        $0.textColor = .black
+        $0.textAlignment = .right
     }
 
     let cancelButton = UIButton().then {
@@ -18,7 +20,6 @@ class CartView: UIView {
     }
 
     let purchaseButton = UIButton().then {
-        $0.setTitle("구매하기", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.backgroundColor = .systemBlue
     }
@@ -30,7 +31,7 @@ class CartView: UIView {
         let layout = UICollectionViewFlowLayout() // 수직 스크롤형태
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 16 // 셀 간 여백
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width - 32, height: 80)
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width - 32, height: 80) // 임시 아이템 사이즈 지정
         $0.collectionViewLayout = layout
         $0.backgroundColor = .clear
     }
@@ -40,6 +41,9 @@ class CartView: UIView {
         cartCollectionView.register(CartItemCell.self, forCellWithReuseIdentifier: CartItemCell.reuseIdentifier)
         cartCollectionView.dataSource = self
         setupView()
+        setupView()
+        setupTotalPriceText()
+        setupPurchaseButtonTitle()
     }
 
     @available(*, unavailable)
@@ -70,16 +74,21 @@ class CartView: UIView {
             $0.leading.trailing.bottom.equalToSuperview().inset(16)
         }
     }
-}
 
-// 컬렉션 뷰 프로토콜 추가
-extension CartView: UICollectionViewDataSource {
-    // 셀을 몇개 담을 것인가
-    func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
-        return cartViewModel.testCart.count
+    func setupPurchaseButtonTitle() {
+        purchaseButton.setTitle(cartViewModel.purchaseButtonTitle, for: .normal)
     }
 
-    // 셀은 어떻게 담을 것인가
+    func setupTotalPriceText() {
+        totalPriceLabel.text = cartViewModel.totalPriceText
+    }
+}
+
+extension CartView: UICollectionViewDataSource {
+    func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
+        return cartViewModel.testCart.items.count
+    }
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: "CartItemCell",
@@ -88,8 +97,8 @@ extension CartView: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
 
-        let item = cartViewModel.testCart[indexPath.item]
-        cell.configure(with: item)
+        let item = cartViewModel.testCart.items[indexPath.item]
+        cell.configure(with: item, index: indexPath.item)
         return cell
     }
 }
