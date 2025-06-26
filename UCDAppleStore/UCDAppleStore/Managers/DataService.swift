@@ -9,9 +9,9 @@ import Foundation
 
 class DataService {
     static let shared = DataService()
-    
+
     private init() {}
-    
+
     ///  상품 데이터를 로드합니다
     ///
     /// 사용법
@@ -30,7 +30,7 @@ class DataService {
             return []
         }
     }
-    
+
     /// 에러를 던지는 버전 (디버깅할 때만 사용)
     /// -  Warning: 이 메서드를 직접 사용하지 마세요!
     func loadData() throws -> [Product] {
