@@ -66,6 +66,20 @@ final class CartViewModel {
 
     // MARK: Methods
 
+    // 장바구니에 상품 추가
+    func addCartItem(_ item: CartItem) {
+        // 이미 있는 상품이면
+        if let index = cartItems.firstIndex(where: { $0.product.id == item.product.id }) {
+            var item = cartItems[index]
+            item.quantity += 1
+            cartItems[index] = item
+        } else {
+            // 새 상품이라면
+            let newItem = CartItem(product: item.product, quantity: 1)
+            cartItems.append(newItem)
+        }
+    }
+
     // 수량 증가
     func increaseQuantiy(for product: Product) {
         // product id를 이용해 어떤 상품의 인덱스인지 찾아서 할당
