@@ -12,7 +12,11 @@ final class CartItemCell: UICollectionViewCell {
     // MARK: Properties
 
     private var product: Product?
-    weak var delegate: CartViewDelegate?
+
+    // MARK: Closures
+
+    var onTapPlus: (() -> Void)?
+    var onTapMinus: (() -> Void)?
 
     // MARK: UI Components
 
@@ -137,14 +141,11 @@ final class CartItemCell: UICollectionViewCell {
 
     @objc
     private func plusButtonTapped() {
-        // 이름이 같으면 명시적으로 product = self.product로 인식
-        guard let product else { return }
-        delegate?.cartCellDidIncreaseQuantity(for: product)
+        onTapPlus?()
     }
 
     @objc
     private func minusButtonTapped() {
-        guard let product else { return }
-        delegate?.cartCellDidDecreaseQuantity(for: product)
+        onTapMinus?()
     }
 }
