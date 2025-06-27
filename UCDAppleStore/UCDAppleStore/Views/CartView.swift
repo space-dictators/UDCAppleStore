@@ -141,7 +141,7 @@ extension CartView: UICollectionViewDataSource {
         let item = cartViewModel.testCart.items[indexPath.item]
         cell.configure(with: item)
         cell.onTapPlus = { [weak self] in
-            self?.delegate?.cartCellDidDecreaseQuantity(for: item.product)
+            self?.delegate?.cartCellDidIncreaseQuantity(for: item.product)
         }
         cell.onTapMinus = { [weak self] in
             self?.delegate?.cartCellDidDecreaseQuantity(for: item.product)
