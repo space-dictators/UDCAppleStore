@@ -7,7 +7,7 @@ enum Category: String, Codable, CaseIterable {
     case macBook = "MacBook"
     case mac = "Mac"
     case accessories = "Accessories"
-    
+
     var titleName: String {
         switch self {
         case .iphone:
@@ -19,10 +19,10 @@ enum Category: String, Codable, CaseIterable {
         case .mac:
             return "Mac"
         case .accessories:
-            return "악세서리"
+            return "Accessories"
         }
     }
-    
+
     static var allCategories: [Category] {
         return Category.allCases
     }
