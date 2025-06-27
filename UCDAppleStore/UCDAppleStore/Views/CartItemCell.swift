@@ -5,8 +5,11 @@ import SnapKit
 import Then
 
 final class CartItemCell: UICollectionViewCell {
-    
+    // MARK: - Constants
+
     static let reuseIdentifier = "CartItemCell"
+
+    // MARK: UI Components
 
     private let nameLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16, weight: .medium)
@@ -40,8 +43,14 @@ final class CartItemCell: UICollectionViewCell {
     private let separatorView = UIView().then {
         $0.backgroundColor = .systemGray4
     }
-    
+
+    // MARK: Properties
+
     private var cellIndex: Int? // 셀의 인덱스
+
+    weak var delegate: CartViewDelegate?
+
+    // MARK: Initailizers
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -55,13 +64,7 @@ final class CartItemCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with item: CartItem, index: Int) {
-        nameLabel.text = item.product.name
-        unitPriceLabel.text = "\(item.product.price)원"
-        quantityLabel.text = "\(item.quantity)"
-        totalPriceLabel.text = "총액: \(item.totalPrice)원"
-        cellIndex = index
-    }
+    // MARK: Setup Methods
 
     private func setupUI() {
         let itemList = [
@@ -114,5 +117,13 @@ final class CartItemCell: UICollectionViewCell {
         totalPriceLabel.snp.makeConstraints {
             $0.bottom.trailing.equalToSuperview().inset(12)
         }
+    }
+
+    func configure(with item: CartItem, index: Int) {
+        nameLabel.text = item.product.name
+        unitPriceLabel.text = "\(item.product.price)원"
+        quantityLabel.text = "\(item.quantity)"
+        totalPriceLabel.text = "총액: \(item.totalPrice)원"
+        cellIndex = index
     }
 }
