@@ -2,9 +2,8 @@
 import Foundation
 
 final class CartViewModel {
-    
     // MARK: Properties
-    
+
     private(set) var cartItems: [CartItem]
 
     // MARK: Initailizers
@@ -66,9 +65,9 @@ final class CartViewModel {
     }
 
     // MARK: Methods
-    
+
     // 수량 증가
-    func changeQuantity(for product: Product, isIncrease: Bool) {
+    func increaseQuantiy(for product: Product) {
         // product id를 이용해 어떤 상품의 인덱스인지 찾아서 할당
         guard let index = cartItems.firstIndex(where: { $0.product.id == product.id }) else {
             return // 비어있을 경우 아무것도 하지 않음
@@ -76,23 +75,33 @@ final class CartViewModel {
 
         var item = cartItems[index]
 
-        if isIncrease { // true, +버튼을 눌렀을 때
-            if item.quantity >= 10 { // 이미 10개 이상이라면
-                // TODO: Alert - 최대 수량(10개) 초과
-                return
-            }
-            item.quantity += 1
-        } else { // false, - 버튼을 눌렀을 때
-            if item.quantity == 0 { // 이미 0개일 경우
-                // TODO: Alert - 최소 수량(0개) 미만
-                return
-            }
-            item.quantity -= 1
+        if item.quantity >= 10 { // 이미 10개 이상이라면
+            // TODO: Alert - 최대 수량(10개) 초과
+            return
         }
+        item.quantity += 1
 
         cartItems[index] = item // 바뀐 값 재할당
     }
-    
+
+    // 수량 감소
+    func decreaseQuantiy(for product: Product) {
+        // TODO: Alert - 최소 수량(0개) 미만
+        guard let index = cartItems.firstIndex(where: { $0.product.id == product.id }) else {
+            return // 비어있을 경우 아무것도 하지 않음
+        }
+
+        var item = cartItems[index]
+
+        if item.quantity == 0 {
+            // TODO: Alert - 최소 수량(0개) 미만
+            return
+        }
+
+        item.quantity -= 1
+        cartItems[index] = item // 바뀐 값 재할당
+    }
+
     // 카트 비우기
     func clearCart() {
         // TODO: Alert - 확인 메시지 출력
