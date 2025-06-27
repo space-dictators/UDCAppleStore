@@ -95,6 +95,7 @@ final class CartViewModel {
     
     // 카트 비우기
     func clearCart() {
+        // TODO: Alert - 확인 메시지 출력
         cartItems.removeAll()
     }
 }
