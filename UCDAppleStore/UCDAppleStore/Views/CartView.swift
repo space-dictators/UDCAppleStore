@@ -6,7 +6,7 @@ import Then
 
 class CartView: UIView {
     // 테스트용 임시 카트뷰모델 생성
-    private let cartViewModel = CartViewModel()
+    let cartViewModel = CartViewModel()
 
     // MARK: Properties
 
@@ -127,7 +127,7 @@ extension CartView: UICollectionViewDataSource {
     // MARK: Setup Methods
 
     func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
-        return cartViewModel.testCart.items.count
+        return cartViewModel.cartItems.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -138,7 +138,7 @@ extension CartView: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
 
-        let item = cartViewModel.testCart.items[indexPath.item]
+        let item = cartViewModel.cartItems[indexPath.item]
         cell.configure(with: item)
         cell.onTapPlus = { [weak self] in
             self?.delegate?.cartCellDidIncreaseQuantity(for: item.product)
