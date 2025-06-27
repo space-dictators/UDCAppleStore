@@ -11,7 +11,7 @@ final class CartViewModel {
                 product: Product(
                     id: 1,
                     name: "iPhone 16",
-                    category: .iPhone,
+                    category: .iphone,
                     price: 1_250_000,
                     imageURL: URL(string: "https://store.storeimages.cdn-apple.com/...")!
                 ),
@@ -21,7 +21,7 @@ final class CartViewModel {
                 product: Product(
                     id: 2,
                     name: "iPhone 16 Plus",
-                    category: .iPhone,
+                    category: .iphone,
                     price: 1_350_000,
                     imageURL: URL(string: "https://store.storeimages.cdn-apple.com/...")!
                 ),
@@ -31,7 +31,7 @@ final class CartViewModel {
                 product: Product(
                     id: 6,
                     name: "iPad A16",
-                    category: .iPad,
+                    category: .ipad,
                     price: 529_000,
                     imageURL: URL(string: "https://store.storeimages.cdn-apple.com/...")!
                 ),
