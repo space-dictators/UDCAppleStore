@@ -9,6 +9,11 @@ final class CartItemCell: UICollectionViewCell {
 
     static let reuseIdentifier = "CartItemCell"
 
+    // MARK: Properties
+
+    private var product: Product?
+    weak var delegate: CartViewDelegate?
+
     // MARK: UI Components
 
     private let nameLabel = UILabel().then {
@@ -21,18 +26,20 @@ final class CartItemCell: UICollectionViewCell {
     }
 
     private let minusButton = UIButton().then {
-        $0.setTitle("⊖", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
+        let configuration = UIImage.SymbolConfiguration(pointSize: 30)
+        $0.setImage(UIImage(systemName: "minus.circle", withConfiguration: configuration), for: .normal)
+        $0.tintColor = .black
     }
 
     private let quantityLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 14)
+        $0.font = .systemFont(ofSize: 16)
         $0.textAlignment = .center
     }
 
     private let plusButton = UIButton().then {
-        $0.setTitle("⊕", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
+        let configuration = UIImage.SymbolConfiguration(pointSize: 30)
+        $0.setImage(UIImage(systemName: "plus.circle", withConfiguration: configuration), for: .normal)
+        $0.tintColor = .black
     }
 
     private let totalPriceLabel = UILabel().then {
@@ -42,21 +49,16 @@ final class CartItemCell: UICollectionViewCell {
 
     private let separatorView = UIView().then {
         $0.backgroundColor = .systemGray4
+        $0.tintColor = .black
     }
-
-    // MARK: Properties
-
-    private var cellIndex: Int? // 셀의 인덱스
-
-    weak var delegate: CartViewDelegate?
 
     // MARK: Initailizers
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
-        contentView.backgroundColor = .white
-        contentView.layer.cornerRadius = 12
+        plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
+        minusButton.addTarget(self, action: #selector(minusButtonTapped), for: .touchUpInside)
     }
 
     @available(*, unavailable)
@@ -67,6 +69,9 @@ final class CartItemCell: UICollectionViewCell {
     // MARK: Setup Methods
 
     private func setupUI() {
+        contentView.backgroundColor = .white
+        contentView.layer.cornerRadius = 12
+
         let itemList = [
             nameLabel,
             unitPriceLabel,
@@ -106,6 +111,7 @@ final class CartItemCell: UICollectionViewCell {
         quantityLabel.snp.makeConstraints {
             $0.centerY.equalTo(minusButton)
             $0.leading.equalTo(minusButton.snp.trailing).offset(8)
+            $0.width.equalTo(28)
         }
 
         plusButton.snp.makeConstraints {
@@ -119,11 +125,26 @@ final class CartItemCell: UICollectionViewCell {
         }
     }
 
-    func configure(with item: CartItem, index: Int) {
+    func configure(with item: CartItem) {
         nameLabel.text = item.product.name
         unitPriceLabel.text = "\(item.product.price)원"
         quantityLabel.text = "\(item.quantity)"
         totalPriceLabel.text = "총액: \(item.totalPrice)원"
-        cellIndex = index
+        product = item.product
+    }
+
+    // MARK: Actions
+
+    @objc
+    private func plusButtonTapped() {
+        // 이름이 같으면 명시적으로 product = self.product로 인식
+        guard let product else { return }
+        delegate?.cartCellDidIncreaseQuantity(for: product)
+    }
+
+    @objc
+    private func minusButtonTapped() {
+        guard let product else { return }
+        delegate?.cartCellDidDecreaseQuantity(for: product)
     }
 }
