@@ -71,8 +71,15 @@ final class CartViewModel {
         // 이미 있는 상품이면
         if let index = cartItems.firstIndex(where: { $0.product.id == item.product.id }) {
             var item = cartItems[index]
-            item.quantity += 1
-            cartItems[index] = item
+
+            if item.quantity < 10 {
+                item.quantity += 1
+                cartItems[index] = item
+            } else {
+                // TODO: 10개 초과시 예외처리
+                print("10개 오버 예외처리")
+                return
+            }
         } else {
             // 새 상품이라면
             let newItem = CartItem(product: item.product, quantity: 1)
