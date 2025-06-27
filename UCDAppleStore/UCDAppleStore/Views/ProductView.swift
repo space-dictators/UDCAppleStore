@@ -12,16 +12,19 @@ import UIKit
 class ProductView: UIView {
     private let imageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
+        $0.clipsToBounds = true
     }
 
     private let nameLabel = UILabel().then {
-        $0.font = .boldSystemFont(ofSize: 16)
+        $0.font = .boldSystemFont(ofSize: 14)
         $0.numberOfLines = 2
+        $0.textAlignment = .center
     }
 
     private let priceLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 14)
+        $0.font = .systemFont(ofSize: 13)
         $0.textColor = .systemGray
+        $0.textAlignment = .center
     }
 
     override init(frame: CGRect) {
@@ -40,18 +43,21 @@ class ProductView: UIView {
         addSubview(priceLabel)
 
         imageView.snp.makeConstraints { make in
-            make.top.left.right.equalToSuperview()
-            make.height.equalTo(self.snp.width) // 정사각형 이미지
+            make.top.equalToSuperview().offset(8)
+            make.centerX.equalToSuperview()
+            make.width.height.equalToSuperview().multipliedBy(0.6)
         }
 
         nameLabel.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.bottom).offset(8)
-            make.left.right.equalToSuperview()
+            make.left.equalToSuperview().offset(4)
+            make.right.equalToSuperview().offset(-4)
         }
 
         priceLabel.snp.makeConstraints { make in
             make.top.equalTo(nameLabel.snp.bottom).offset(4)
-            make.left.right.bottom.equalToSuperview()
+            make.left.right.equalTo(nameLabel)
+            make.bottom.lessThanOrEqualToSuperview().offset(-8)
         }
     }
 
@@ -59,7 +65,6 @@ class ProductView: UIView {
         nameLabel.text = product.name
         priceLabel.text = "\(product.price) 원"
 
-        // 이미지 로드 (간단히 URL -> Data 로딩, 실제론 비동기 라이브러리 추천)
         DispatchQueue.global().async { [weak self] in
             if let data = try? Data(contentsOf: product.imageURL),
                let image = UIImage(data: data)
