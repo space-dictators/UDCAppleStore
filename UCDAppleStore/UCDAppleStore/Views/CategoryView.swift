@@ -69,7 +69,11 @@ class CategoryView: UIView {
                 $0.setTitleColor(.label, for: .normal)
                 $0.layer.cornerRadius = 20
                 $0.tag = index
-                $0.addTarget(self, action: #selector(categoryButtonTapped(_:)), for: .touchUpInside)
+                $0.addTarget(
+                    self,
+                    action: #selector(categoryButtonDidTap(_:)),
+                    for: .touchUpInside
+                )
             }
             categoryButtons.append(button)
             stackView.addArrangedSubview(button)
@@ -90,7 +94,7 @@ class CategoryView: UIView {
     // MARK: - Actions
 
     @objc
-    private func categoryButtonTapped(_ sender: UIButton) {
+    private func categoryButtonDidTap(_ sender: UIButton) {
         let selectedCategory = categories[sender.tag]
         viewModel.selectCategory(selectedCategory)
         updateButtons(selectedCategory: viewModel.selectedCategory)
