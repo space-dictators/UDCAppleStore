@@ -9,10 +9,6 @@ final class CartItemCell: UICollectionViewCell {
 
     static let reuseIdentifier = "CartItemCell"
 
-    // MARK: Properties
-
-    private var product: Product?
-
     // MARK: Closures
 
     var onTapPlus: (() -> Void)?
@@ -134,7 +130,6 @@ final class CartItemCell: UICollectionViewCell {
         unitPriceLabel.text = "\(item.product.price)원"
         quantityLabel.text = "\(item.quantity)"
         totalPriceLabel.text = "총액: \(item.totalPrice)원"
-        product = item.product
     }
 
     // MARK: Actions
