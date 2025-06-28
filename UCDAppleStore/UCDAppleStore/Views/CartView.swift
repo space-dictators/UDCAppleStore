@@ -54,6 +54,9 @@ class CartView: UIView {
         setupPurchaseButtonTitle()
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         purchaseButton.addTarget(self, action: #selector(purchaseButtonTapped), for: .touchUpInside)
+        cartViewModel.onAlertTriggered = { [weak self] alertType in
+            self?.delegate?.cartViewShouldShowAlert(alertType)
+        }
     }
 
     @available(*, unavailable)
@@ -120,7 +123,7 @@ class CartView: UIView {
     private func purchaseButtonTapped() {
         // TODO: 프로토콜 구현시 연결
     }
-    
+
     // TODO: UCD 버튼스타일 통합시 스타일 메서드 적용으로 변경
     func updatePurchaseButtonState() {
         let isEnabled = cartViewModel.isPurchaseAvailable

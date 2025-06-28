@@ -10,7 +10,7 @@ import Foundation
 /// CategoryView에서 누른 카테고리 버튼을 MainViewController에 알립니다.
 protocol CategoryViewDelegate: AnyObject {
     /// 사용자가 카테고리 버튼을 눌렀을 때 호출됩니다
-    ///- Parameter category: 선택된 카테고리 (iPhone, iPad, MacBook, Mac, Accessories)
+    /// - Parameter category: 선택된 카테고리 (iPhone, iPad, MacBook, Mac, Accessories)
     func categoryViewDidSelectCategory(_ category: Category)
 }
 
@@ -33,4 +33,6 @@ protocol CartViewDelegate: AnyObject {
     /// 사용자가 취소하기 버튼을 탭했을 때 호출됩니다
     /// 장바구니의 모든 아이템이 제거됩니다
     func cartViewDidTapCancel()
+    /// 예외처리 발생시 Alert 발생을 알려줍니다
+    func cartViewShouldShowAlert(_ alertType: CartAlertType)
 }

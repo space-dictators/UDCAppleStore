@@ -5,7 +5,11 @@ final class CartViewModel {
     // MARK: Properties
 
     private(set) var cartItems: [CartItem]
-    
+
+    // MARK: Closuers
+
+    var onAlertTriggered: ((CartAlertType) -> Void)?
+
     // MARK: Initailizers
 
     init() {
@@ -55,7 +59,7 @@ final class CartViewModel {
     }
 
     // MARK: Properties
-    
+
     var totalPriceText: String {
         "\(cartItems.reduce(0) { $0 + $1.totalPrice })원"
     }
@@ -63,7 +67,7 @@ final class CartViewModel {
     var purchaseButtonTitle: String {
         "총 \(cartItems.reduce(0) { $0 + $1.quantity })개 결제하기"
     }
-    
+
     var isPurchaseAvailable: Bool {
         cartItems.reduce(0) { $0 + $1.quantity } > 0
     }
@@ -101,7 +105,8 @@ final class CartViewModel {
         var item = cartItems[index]
 
         if item.quantity >= 10 { // 이미 10개 이상이라면
-            // TODO: Alert - 최대 수량(10개) 초과
+            // 최대 수량(10개) 초과
+            onAlertTriggered?(.quantityLimitExceeded)
             return
         }
         item.quantity += 1
@@ -119,7 +124,8 @@ final class CartViewModel {
         var item = cartItems[index]
 
         if item.quantity == 0 {
-            // TODO: Alert - 최소 수량(0개) 미만
+            // 이미 0개일 경우
+            onAlertTriggered?(.quantityAlreadyZero)
             return
         }
 
@@ -132,5 +138,10 @@ final class CartViewModel {
         // TODO: Alert - 확인 메시지 출력
         cartItems.removeAll()
     }
+}
 
+// Alert종류를 나타내는 enum
+enum CartAlertType {
+    case quantityLimitExceeded // 10개 초과시
+    case quantityAlreadyZero // 0개 미만시
 }
