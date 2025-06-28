@@ -102,6 +102,7 @@ class CartView: UIView {
 
     func setupPurchaseButtonTitle() {
         purchaseButton.setTitle(cartViewModel.purchaseButtonTitle, for: .normal)
+        updatePurchaseButtonState()
     }
 
     func setupTotalPriceText() {
@@ -118,6 +119,14 @@ class CartView: UIView {
     @objc
     private func purchaseButtonTapped() {
         // TODO: 프로토콜 구현시 연결
+    }
+    
+    // TODO: UCD 버튼스타일 통합시 스타일 메서드 적용으로 변경
+    func updatePurchaseButtonState() {
+        let isEnabled = cartViewModel.isPurchaseAvailable
+        purchaseButton.isEnabled = isEnabled
+        purchaseButton.backgroundColor = isEnabled ? .systemBlue : .systemGray3
+        purchaseButton.alpha = isEnabled ? 1.0 : 0.5
     }
 }
 

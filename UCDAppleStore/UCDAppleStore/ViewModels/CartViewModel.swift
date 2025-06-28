@@ -5,7 +5,7 @@ final class CartViewModel {
     // MARK: Properties
 
     private(set) var cartItems: [CartItem]
-
+    
     // MARK: Initailizers
 
     init() {
@@ -55,13 +55,17 @@ final class CartViewModel {
     }
 
     // MARK: Properties
-
+    
     var totalPriceText: String {
         "\(cartItems.reduce(0) { $0 + $1.totalPrice })원"
     }
 
     var purchaseButtonTitle: String {
         "총 \(cartItems.reduce(0) { $0 + $1.quantity })개 결제하기"
+    }
+    
+    var isPurchaseAvailable: Bool {
+        cartItems.reduce(0) { $0 + $1.quantity } > 0
     }
 
     // MARK: Methods
@@ -128,4 +132,5 @@ final class CartViewModel {
         // TODO: Alert - 확인 메시지 출력
         cartItems.removeAll()
     }
+
 }
