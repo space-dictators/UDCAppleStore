@@ -9,14 +9,8 @@ import SnapKit
 import Then
 import UIKit
 
-protocol ProductListViewDelegate: AnyObject {
-    func numberOfItems() -> Int
-    func product(at index: Int) -> Product?
-}
-
 class ProductListView: UIView {
-    weak var delegate: ProductListViewDelegate?
-
+    private var products: [Product] = []
     private var collectionView: UICollectionView!
 
     override init(frame: CGRect) {
@@ -27,6 +21,12 @@ class ProductListView: UIView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupCollectionView()
+    }
+
+    // 🔁 외부에서 products 배열을 전달받고 갱신하는 메서드
+    func reload(products: [Product]) {
+        self.products = products
+        collectionView.reloadData()
     }
 
     private func setupCollectionView() {
@@ -48,17 +48,21 @@ class ProductListView: UIView {
                 widthDimension: .absolute(screenWidth - horizontalInsets),
                 heightDimension: .absolute(itemWidth)
             )
-            let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: horizontalGroupSize,
-                                                                     subitem: item,
-                                                                     count: 2)
+            let horizontalGroup = NSCollectionLayoutGroup.horizontal(
+                layoutSize: horizontalGroupSize,
+                subitem: item,
+                count: 2
+            )
             horizontalGroup.interItemSpacing = .fixed(interItemSpacing)
 
             let verticalGroupSize = NSCollectionLayoutSize(
                 widthDimension: .absolute(screenWidth - horizontalInsets),
                 heightDimension: .absolute(itemWidth * 2 + interItemSpacing)
             )
-            let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: verticalGroupSize,
-                                                                 subitems: [horizontalGroup, horizontalGroup])
+            let verticalGroup = NSCollectionLayoutGroup.vertical(
+                layoutSize: verticalGroupSize,
+                subitems: [horizontalGroup, horizontalGroup]
+            )
             verticalGroup.interItemSpacing = .fixed(interItemSpacing)
 
             let section = NSCollectionLayoutSection(group: verticalGroup)
@@ -69,6 +73,7 @@ class ProductListView: UIView {
         }
 
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout).then {
+            $0.backgroundColor = .white
             $0.isPagingEnabled = true
             $0.showsHorizontalScrollIndicator = false
             $0.register(ProductCell.self, forCellWithReuseIdentifier: "ProductCell")
@@ -80,23 +85,21 @@ class ProductListView: UIView {
             $0.edges.equalTo(safeAreaLayoutGuide)
         }
     }
-
-    func reloadData() {
-        collectionView.reloadData()
-    }
 }
+
+// MARK: - DataSource
 
 extension ProductListView: UICollectionViewDataSource {
     func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
-        return delegate?.numberOfItems() ?? 0
+        return products.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let product = delegate?.product(at: indexPath.item),
-              let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as? ProductCell
-        else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as? ProductCell else {
             return UICollectionViewCell()
         }
+
+        let product = products[indexPath.item]
         cell.configure(with: product)
         return cell
     }

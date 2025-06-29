@@ -11,26 +11,16 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Apple Products"
-        productListView.delegate = self
         bindViewModel()
         viewModel.fetchProducts()
     }
 
     private func bindViewModel() {
         viewModel.onDataUpdated = { [weak self] in
+            guard let self else { return }
             DispatchQueue.main.async {
-                self?.productListView.reloadData()
+                self.productListView.reload(products: self.viewModel.products)
             }
         }
-    }
-}
-
-extension ViewController: ProductListViewDelegate {
-    func numberOfItems() -> Int {
-        return viewModel.numberOfItems()
-    }
-
-    func product(at index: Int) -> Product? {
-        return viewModel.product(at: index)
     }
 }

@@ -5,6 +5,7 @@
 //  Created by 이서린 on 6/26/25.
 //
 
+import Kingfisher // Kingfisher import 필요
 import SnapKit
 import Then
 import UIKit
@@ -62,21 +63,11 @@ class ProductView: UIView {
     }
 
     func configure(with product: Product) {
+        // 이름과 가격 설정
         nameLabel.text = product.name
         priceLabel.text = "\(product.price) 원"
 
-        DispatchQueue.global().async { [weak self] in
-            if let data = try? Data(contentsOf: product.imageURL),
-               let image = UIImage(data: data)
-            {
-                DispatchQueue.main.async {
-                    self?.imageView.image = image
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self?.imageView.image = UIImage(systemName: "photo")
-                }
-            }
-        }
+        // 이미지 로드 - 익스텐션 활용
+        imageView.loadImage(from: product.imageURL)
     }
 }
