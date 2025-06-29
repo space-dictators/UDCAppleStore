@@ -9,24 +9,55 @@ import SnapKit
 import Then
 import UIKit
 
-class ProductListView: UIView {
-    private var products: [Product] = []
+class ProductListView: UIView, CategoryViewDelegate {
+    // MARK: - Properties
+
+    private let categoryView = CategoryView()
+    private var allProducts: [Product] = [] // 전체 상품 저장
+    private var products: [Product] = [] // 현재 보여지는 상품
     private var collectionView: UICollectionView!
+
+    // MARK: - Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupCollectionView()
+        setupUI()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setupCollectionView()
+        setupUI()
     }
 
-    // 🔁 외부에서 products 배열을 전달받고 갱신하는 메서드
+    // MARK: - Public
+
+    /// 외부에서 products 배열을 전달받고 갱신하는 메서드
     func reload(products: [Product]) {
+        allProducts = products
         self.products = products
         collectionView.reloadData()
+    }
+
+    // MARK: - Private
+
+    private func setupUI() {
+        setupCollectionView()
+
+        categoryView.delegate = self
+
+        addSubview(categoryView)
+        addSubview(collectionView)
+
+        categoryView.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(60)
+        }
+
+        collectionView.snp.makeConstraints {
+            $0.top.equalTo(categoryView.snp.bottom)
+            $0.leading.trailing.bottom.equalTo(safeAreaLayoutGuide)
+        }
     }
 
     private func setupCollectionView() {
@@ -79,15 +110,18 @@ class ProductListView: UIView {
             $0.register(ProductCell.self, forCellWithReuseIdentifier: "ProductCell")
             $0.dataSource = self
         }
+    }
 
-        addSubview(collectionView)
-        collectionView.snp.makeConstraints {
-            $0.edges.equalTo(safeAreaLayoutGuide)
-        }
+    // MARK: - CategoryViewDelegate
+
+    func categoryViewDidSelectCategory(_ category: Category) {
+        let filtered = allProducts.filter { $0.category == category }
+        products = filtered
+        collectionView.reloadData()
     }
 }
 
-// MARK: - DataSource
+// MARK: - UICollectionViewDataSource
 
 extension ProductListView: UICollectionViewDataSource {
     func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
