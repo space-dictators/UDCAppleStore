@@ -1,10 +1,3 @@
-//
-//  CartDetent.swift
-//  UCDAppleStore
-//
-//  Created by Milou on 6/27/25.
-//
-
 import UIKit
 
 enum CartDetent: String, CaseIterable {
