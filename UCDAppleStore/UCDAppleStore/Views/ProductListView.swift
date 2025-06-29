@@ -13,8 +13,8 @@ class ProductListView: UIView, CategoryViewDelegate {
     // MARK: - Properties
 
     private let categoryView = CategoryView()
-    private var allProducts: [Product] = [] // 전체 상품 저장
-    private var products: [Product] = [] // 현재 보여지는 상품
+    private var allProducts: [Product] = []
+    private var products: [Product] = [] 
     private var collectionView: UICollectionView!
 
     // MARK: - Init
