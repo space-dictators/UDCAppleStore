@@ -14,7 +14,7 @@ class ProductListView: UIView, CategoryViewDelegate {
 
     private let categoryView = CategoryView()
     private var allProducts: [Product] = []
-    private var products: [Product] = [] 
+    private var products: [Product] = []
     private var collectionView: UICollectionView!
 
     // MARK: - Init
