@@ -11,6 +11,7 @@ class CartView: UIView {
     // MARK: Properties
 
     weak var delegate: CartViewDelegate?
+    
 
     // MARK: UI Components
 
@@ -110,6 +111,13 @@ class CartView: UIView {
 
     func setupTotalPriceText() {
         totalPriceLabel.text = cartViewModel.totalPriceText
+    }
+    
+    // 장바구니 리로드 함수 추가
+    func reloadCartUI() {
+        cartCollectionView.reloadData()
+        setupTotalPriceText()
+        setupPurchaseButtonTitle()
     }
 
     // MARK: Actions
