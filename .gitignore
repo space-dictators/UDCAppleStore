@@ -15,6 +15,7 @@ Pods/
 .AppleDouble
 .LSOverride
 
+
 # Icon must end with two \r
 Icon
 
@@ -138,7 +139,9 @@ iOSInjectionProject/
 **/xcshareddata/WorkspaceSettings.xcsettings
 *.xcconfig
 
-### Firebase ###
-GoogleService-Info.plist
+### SwiftPackageManager ###
+Packages
+xcuserdata
+*.xcodeproj
 
 # End of https://www.toptal.com/developers/gitignore/api/swift,xcode,macos,cocoapods
