@@ -1,10 +1,3 @@
-//
-//  ProductListView.swift
-//  UCDAppleStore
-//
-//  Created by 이서린 on 6/27/25.
-//
-
 import SnapKit
 import Then
 import UIKit
@@ -13,6 +6,7 @@ class ProductListView: UIView {
     // MARK: - Properties
 
     private var products: [Product] = []
+    private var paddedProducts: [Product?] = []
     private var collectionView: UICollectionView!
     private let pageControl = UIPageControl()
 
@@ -32,9 +26,15 @@ class ProductListView: UIView {
 
     func reload(products: [Product]) {
         self.products = products
+
+        // 4의 배수로 맞추기 위해 nil로 padding
+        let remainder = products.count % 4
+        let padding = remainder == 0 ? 0 : 4 - remainder
+        paddedProducts = products.map { Optional($0) } + Array(repeating: nil, count: padding)
+
         collectionView.reloadData()
 
-        let pages = Int(ceil(Double(products.count) / 4.0)) /
+        let pages = Int(ceil(Double(products.count) / 4.0))
         pageControl.numberOfPages = pages
         pageControl.currentPage = 0
     }
@@ -123,7 +123,7 @@ class ProductListView: UIView {
             $0.showsHorizontalScrollIndicator = false
             $0.register(ProductCell.self, forCellWithReuseIdentifier: "ProductCell")
             $0.dataSource = self
-            $0.delegate = self 
+            $0.delegate = self
         }
     }
 }
@@ -132,7 +132,7 @@ class ProductListView: UIView {
 
 extension ProductListView: UICollectionViewDataSource {
     func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
-        return products.count
+        return paddedProducts.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -140,8 +140,13 @@ extension ProductListView: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
 
-        let product = products[indexPath.item]
-        cell.configure(with: product)
+        if let product = paddedProducts[indexPath.item] {
+            cell.isHidden = false
+            cell.configure(with: product)
+        } else {
+            cell.isHidden = true // 빈 셀 숨기기
+        }
+
         return cell
     }
 }
