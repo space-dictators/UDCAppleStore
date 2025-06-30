@@ -15,7 +15,7 @@ class ProductListView: UIView {
     private var products: [Product] = []
     private var collectionView: UICollectionView!
 
-    weak var delegate: ProductViewDelegate?
+    weak var delegate: ProductListViewDelegate?
 
     // MARK: - Init
 

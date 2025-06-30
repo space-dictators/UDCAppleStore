@@ -12,7 +12,7 @@ class MainViewController: UIViewController {
 
     private var categoryView = CategoryView()
     private var productListView = ProductListView()
-    private var cartView = CartView()
+    private var cartViewController: CartViewController?
 
     // MARK: - Lifecycle
 
@@ -40,6 +40,12 @@ class MainViewController: UIViewController {
             DispatchQueue.main.async {
                 let products = self?.productViewModel.products ?? []
                 self?.productListView.reload(products: products)
+            }
+        }
+
+        cartViewModel.onCartUpdated = { [weak self] in
+            DispatchQueue.main.async {
+                self?.updateCartView()
             }
         }
     }
@@ -77,6 +83,7 @@ class MainViewController: UIViewController {
     }
 
     private func setupProductListView() {
+        productListView.delegate = self
         view.addSubview(productListView)
 
         productListView.snp.makeConstraints {
@@ -85,26 +92,51 @@ class MainViewController: UIViewController {
         }
     }
 
+    private func updateCartView() {
+        cartViewController?.updateCart(
+            items: cartViewModel.cartItems,
+            totalPriceText: cartViewModel.totalPriceText,
+            purchaseButtonTitle: cartViewModel.purchaseButtonTitle,
+            isPurchaseEnabled: cartViewModel.isPurchaseAvailable
+        )
+    }
+
     // MARK: - Public Methods
 
     func presentCartView() {
-        let cartViewController = CartViewController()
+        let cartVC = CartViewController()
+        cartViewController = cartVC
 
-        if let sheet = cartViewController.sheetPresentationController {
+        cartVC.setCartDelegate(self)
+        cartVC.updateCart(
+            items: cartViewModel.cartItems,
+            totalPriceText: cartViewModel.totalPriceText,
+            purchaseButtonTitle: cartViewModel.purchaseButtonTitle,
+            isPurchaseEnabled: cartViewModel.isPurchaseAvailable
+        )
+
+        if let sheet = cartVC.sheetPresentationController {
             sheet.detents = [CartDetent.low, CartDetent.middle, CartDetent.high].map { $0.detent }
             sheet.selectedDetentIdentifier = CartDetent.low.identifier // 초기 높이
             sheet.prefersGrabberVisible = true
             sheet.prefersScrollingExpandsWhenScrolledToEdge = false // 내부 뷰 스크롤로 시트 확장
             sheet.largestUndimmedDetentIdentifier = .large
-            cartViewController.isModalInPresentation = true
+            cartVC.isModalInPresentation = true
         }
-        present(cartViewController, animated: true)
+        present(cartVC, animated: true)
     }
 }
 
 extension MainViewController: CategoryViewDelegate {
     func categoryViewDidSelectCategory(_ category: Category) {
         categoryViewModel.selectCategory(category)
+    }
+}
+
+extension MainViewController: ProductListViewDelegate {
+    func productViewDidTapAddToCart(_ product: Product) {
+        let cartItem = CartItem(product: product, quantity: 1)
+        cartViewModel.addCartItem(cartItem)
     }
 }
 

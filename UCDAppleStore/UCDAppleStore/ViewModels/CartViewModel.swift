@@ -4,59 +4,12 @@ import Foundation
 final class CartViewModel {
     // MARK: Properties
 
-    private(set) var cartItems: [CartItem]
+    private(set) var cartItems: [CartItem] = []
 
     // MARK: Closuers
 
+    var onCartUpdated: (() -> Void)?
     var onAlertTriggered: ((CartAlertType) -> Void)?
-
-    // MARK: Initailizers
-
-    init() {
-        // 테스트용 하드코딩 데이터
-        cartItems = [
-            CartItem(
-                product: Product(
-                    id: 1,
-                    name: "iPhone 16",
-                    category: .iphone,
-                    price: 1_250_000,
-                    imageURL: URL(string: "https://store.storeimages.cdn-apple.com/...")!
-                ),
-                quantity: 1
-            ),
-            CartItem(
-                product: Product(
-                    id: 2,
-                    name: "iPhone 16 Plus",
-                    category: .iphone,
-                    price: 1_350_000,
-                    imageURL: URL(string: "https://store.storeimages.cdn-apple.com/...")!
-                ),
-                quantity: 2
-            ),
-            CartItem(
-                product: Product(
-                    id: 6,
-                    name: "iPad A16",
-                    category: .ipad,
-                    price: 529_000,
-                    imageURL: URL(string: "https://store.storeimages.cdn-apple.com/...")!
-                ),
-                quantity: 2
-            ),
-            CartItem(
-                product: Product(
-                    id: 29,
-                    name: "PopSockets MagSafe Grip (iPhone)-스트로베리",
-                    category: .accessories,
-                    price: 59000,
-                    imageURL: URL(string: "https://store.storeimages.cdn-apple.com/...")!
-                ),
-                quantity: 1
-            ),
-        ]
-    }
 
     // MARK: Properties
 
@@ -93,6 +46,8 @@ final class CartViewModel {
             let newItem = CartItem(product: item.product, quantity: 1)
             cartItems.append(newItem)
         }
+
+        onCartUpdated?()
     }
 
     // 수량 증가
@@ -112,6 +67,7 @@ final class CartViewModel {
         item.quantity += 1
 
         cartItems[index] = item // 바뀐 값 재할당
+        onCartUpdated?()
     }
 
     // 수량 감소
@@ -129,15 +85,18 @@ final class CartViewModel {
 
         item.quantity -= 1
         cartItems[index] = item // 바뀐 값 재할당
+        onCartUpdated?()
     }
 
     func removeItem(for product: Product) {
         cartItems.removeAll { $0.product.id == product.id }
+        onCartUpdated?()
     }
 
     // 카트 비우기
     func clearCart() {
         cartItems.removeAll()
+        onCartUpdated?()
     }
 }
 
