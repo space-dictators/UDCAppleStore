@@ -47,10 +47,10 @@ final class CartViewModel {
             ),
             CartItem(
                 product: Product(
-                    id: 12,
-                    name: "MacBook Air M4 13〃 16GB 256GB",
-                    category: .ipad,
-                    price: 1_590_000,
+                    id: 29,
+                    name: "PopSockets MagSafe Grip (iPhone)-스트로베리",
+                    category: .accessories,
+                    price: 59000,
                     imageURL: URL(string: "https://store.storeimages.cdn-apple.com/...")!
                 ),
                 quantity: 1
