@@ -14,11 +14,11 @@ final class CartViewModel {
     // MARK: Properties
 
     var totalPriceText: String {
-        "총액 : \(cartItems.reduce(0) { $0 + $1.totalPrice }.formattedWithComma)원"
+        .localized("총액 : \(cartItems.reduce(0) { $0 + $1.totalPrice }.formattedWithComma)원")
     }
 
     var purchaseButtonTitle: String {
-        "총 \(cartItems.reduce(0) { $0 + $1.quantity })개 결제하기"
+        .localized("총 \(cartItems.reduce(0) { $0 + $1.quantity })개 결제하기")
     }
 
     var isPurchaseAvailable: Bool {

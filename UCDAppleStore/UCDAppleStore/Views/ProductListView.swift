@@ -14,6 +14,7 @@ class ProductListView: UIView {
 
     private var products: [Product] = []
     private var collectionView: UICollectionView!
+    private let pageControl = UIPageControl()
 
     weak var delegate: ProductListViewDelegate?
 
@@ -31,10 +32,13 @@ class ProductListView: UIView {
 
     // MARK: - Public
 
-    /// 외부에서 products 배열을 전달받고 갱신하는 메서드
     func reload(products: [Product]) {
         self.products = products
         collectionView.reloadData()
+
+        let pages = Int(ceil(Double(products.count) / 4.0)) /
+        pageControl.numberOfPages = pages
+        pageControl.currentPage = 0
     }
 
     // MARK: - Private
@@ -43,9 +47,24 @@ class ProductListView: UIView {
         setupCollectionView()
 
         addSubview(collectionView)
+        addSubview(pageControl)
 
+        // 페이지 인디케이터 스타일 설정
+        pageControl.currentPageIndicatorTintColor = .systemRed
+        pageControl.pageIndicatorTintColor = .systemGray4
+        pageControl.hidesForSinglePage = true
+        pageControl.isUserInteractionEnabled = false
+
+        // Layout
         collectionView.snp.makeConstraints {
-            $0.edges.equalTo(safeAreaLayoutGuide)
+            $0.top.left.right.equalTo(safeAreaLayoutGuide)
+            $0.bottom.equalTo(pageControl.snp.top).offset(-8)
+        }
+
+        pageControl.snp.makeConstraints {
+            $0.bottom.equalTo(safeAreaLayoutGuide).inset(220)
+            $0.centerX.equalToSuperview()
+            $0.height.equalTo(20)
         }
     }
 
@@ -89,6 +108,14 @@ class ProductListView: UIView {
             section.orthogonalScrollingBehavior = .groupPaging
             section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
 
+            section.visibleItemsInvalidationHandler = { [weak self] _, offset, env in
+                guard let self = self else { return }
+                let page = Int(round(offset.x / env.container.contentSize.width))
+                if page != self.pageControl.currentPage {
+                    self.pageControl.currentPage = page
+                }
+            }
+
             return section
         }
 
@@ -98,6 +125,7 @@ class ProductListView: UIView {
             $0.showsHorizontalScrollIndicator = false
             $0.register(ProductCell.self, forCellWithReuseIdentifier: "ProductCell")
             $0.dataSource = self
+            $0.delegate = self 
         }
     }
 }
@@ -122,5 +150,15 @@ extension ProductListView: UICollectionViewDataSource {
             self?.delegate?.productViewDidTapAddToCart(product)
         }
         return cell
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension ProductListView: UICollectionViewDelegate {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let pageWidth = scrollView.frame.width
+        let currentPage = Int(scrollView.contentOffset.x / pageWidth)
+        pageControl.currentPage = currentPage
     }
 }
