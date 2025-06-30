@@ -19,22 +19,16 @@ class CartView: UIView {
     // MARK: UI Components
 
     let totalPriceLabel = UILabel().then {
-        $0.font = .boldSystemFont(ofSize: 16)
-        $0.textColor = .black
+        $0.font = .boldSystemFont(ofSize: 20)
+        $0.textColor = UIColor(named: "TextColor")
         $0.textAlignment = .right
     }
 
-    let cancelButton = UIButton().then {
-        $0.setTitle("초기화", for: .normal)
-        $0.setTitleColor(.white, for: .normal)
-        $0.backgroundColor = .systemGray4
-    }
+    let resetButton = UCDButton(style: .reset)
 
-    let purchaseButton = UIButton().then {
-        $0.setTitleColor(.white, for: .normal)
-        $0.backgroundColor = .systemBlue
-    }
+    let purchaseButton = UCDButton(style: .checkout)
 
+    // TODO: UICollectionViewCompositionalLayout -> ListLayout으로 변경
     let cartCollectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout()
@@ -42,7 +36,6 @@ class CartView: UIView {
         let layout = UICollectionViewFlowLayout() // 수직 스크롤형태
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 16 // 셀 간 여백
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width - 32, height: 80) // 임시 아이템 사이즈 지정
         $0.collectionViewLayout = layout
         $0.backgroundColor = .clear
     }
@@ -53,10 +46,12 @@ class CartView: UIView {
         super.init(frame: frame)
         cartCollectionView.register(CartItemCell.self, forCellWithReuseIdentifier: CartItemCell.reuseIdentifier)
         cartCollectionView.dataSource = self
+        cartCollectionView.delegate = self
         setupView()
         updateTotalPriceText()
         updatePurchaseButtonTitle()
-        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        resetButton.setTitle = "초기화"
+        resetButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         purchaseButton.addTarget(self, action: #selector(purchaseButtonTapped), for: .touchUpInside)
         cartViewModel.onAlertTriggered = { [weak self] alertType in
             self?.delegate?.cartViewShouldShowAlert(alertType)
@@ -72,7 +67,7 @@ class CartView: UIView {
 
     func setupView() {
         addSubview(totalPriceLabel)
-        addSubview(cancelButton)
+        addSubview(resetButton)
         addSubview(purchaseButton)
         addSubview(cartCollectionView)
 
@@ -83,7 +78,7 @@ class CartView: UIView {
         }
 
         // 2. 하단 버튼들: 아래에 고정
-        cancelButton.snp.makeConstraints {
+        resetButton.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(16)
             $0.bottom.equalToSuperview().inset(16)
             $0.trailing.equalTo(purchaseButton.snp.leading).offset(-8)
@@ -101,14 +96,14 @@ class CartView: UIView {
         cartCollectionView.snp.makeConstraints {
             $0.top.equalTo(totalPriceLabel.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalTo(cancelButton.snp.top).offset(-12)
+            $0.bottom.equalTo(resetButton.snp.top).offset(-12)
         }
     }
 
     // MARK: Methods
 
     func updatePurchaseButtonTitle() {
-        purchaseButton.setTitle(cartViewModel.purchaseButtonTitle, for: .normal)
+        purchaseButton.setTitle = cartViewModel.purchaseButtonTitle
         updatePurchaseButtonState()
     }
 
@@ -140,8 +135,7 @@ class CartView: UIView {
     func updatePurchaseButtonState() {
         let isEnabled = cartViewModel.isPurchaseAvailable
         purchaseButton.isEnabled = isEnabled
-        purchaseButton.backgroundColor = isEnabled ? .systemBlue : .systemGray3
-        purchaseButton.alpha = isEnabled ? 1.0 : 0.5
+        purchaseButton.alpha = isEnabled ? 1.0 : 0.5 // 투명도 조절
     }
 }
 
@@ -171,5 +165,14 @@ extension CartView: UICollectionViewDataSource {
             self?.delegate?.cartCellDidDecreaseQuantity(for: item.product)
         }
         return cell
+    }
+}
+
+// TODO: UICollectionViewCompositionalLayout -> ListLayout 으로 변경시에는 삭제
+extension CartView: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, sizeForItemAt _: IndexPath) -> CGSize {
+        return CGSize(
+            width: collectionView.frame.width, height: 102
+        )
     }
 }
