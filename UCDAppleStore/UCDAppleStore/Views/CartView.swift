@@ -11,7 +11,6 @@ class CartView: UIView {
     // MARK: Properties
 
     weak var delegate: CartViewDelegate?
-    
 
     // MARK: UI Components
 
@@ -51,8 +50,8 @@ class CartView: UIView {
         cartCollectionView.register(CartItemCell.self, forCellWithReuseIdentifier: CartItemCell.reuseIdentifier)
         cartCollectionView.dataSource = self
         setupView()
-        setupTotalPriceText()
-        setupPurchaseButtonTitle()
+        updateTotalPriceText()
+        updatePurchaseButtonTitle()
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         purchaseButton.addTarget(self, action: #selector(purchaseButtonTapped), for: .touchUpInside)
         cartViewModel.onAlertTriggered = { [weak self] alertType in
@@ -104,20 +103,20 @@ class CartView: UIView {
 
     // MARK: Methods
 
-    func setupPurchaseButtonTitle() {
+    func updatePurchaseButtonTitle() {
         purchaseButton.setTitle(cartViewModel.purchaseButtonTitle, for: .normal)
         updatePurchaseButtonState()
     }
 
-    func setupTotalPriceText() {
+    func updateTotalPriceText() {
         totalPriceLabel.text = cartViewModel.totalPriceText
     }
-    
+
     // 장바구니 리로드 함수 추가
     func reloadCartUI() {
         cartCollectionView.reloadData()
-        setupTotalPriceText()
-        setupPurchaseButtonTitle()
+        updateTotalPriceText()
+        updatePurchaseButtonTitle()
     }
 
     // MARK: Actions
