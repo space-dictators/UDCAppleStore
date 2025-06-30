@@ -12,6 +12,10 @@ class CartView: UIView {
 
     weak var delegate: CartViewDelegate?
 
+    // MARK: Closuer
+
+    var onCartUpdated: (() -> Void)?
+
     // MARK: UI Components
 
     let totalPriceLabel = UILabel().then {
@@ -50,10 +54,13 @@ class CartView: UIView {
         cartCollectionView.register(CartItemCell.self, forCellWithReuseIdentifier: CartItemCell.reuseIdentifier)
         cartCollectionView.dataSource = self
         setupView()
-        setupTotalPriceText()
-        setupPurchaseButtonTitle()
+        updateTotalPriceText()
+        updatePurchaseButtonTitle()
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         purchaseButton.addTarget(self, action: #selector(purchaseButtonTapped), for: .touchUpInside)
+        cartViewModel.onAlertTriggered = { [weak self] alertType in
+            self?.delegate?.cartViewShouldShowAlert(alertType)
+        }
     }
 
     @available(*, unavailable)
@@ -100,12 +107,21 @@ class CartView: UIView {
 
     // MARK: Methods
 
-    func setupPurchaseButtonTitle() {
+    func updatePurchaseButtonTitle() {
         purchaseButton.setTitle(cartViewModel.purchaseButtonTitle, for: .normal)
+        updatePurchaseButtonState()
     }
 
-    func setupTotalPriceText() {
+    func updateTotalPriceText() {
         totalPriceLabel.text = cartViewModel.totalPriceText
+    }
+
+    // 장바구니 리로드 함수 추가
+    func reloadCartUI() {
+        cartCollectionView.reloadData()
+        updateTotalPriceText()
+        updatePurchaseButtonTitle()
+        onCartUpdated?()
     }
 
     // MARK: Actions
@@ -118,6 +134,14 @@ class CartView: UIView {
     @objc
     private func purchaseButtonTapped() {
         // TODO: 프로토콜 구현시 연결
+    }
+
+    // TODO: UCD 버튼스타일 통합시 스타일 메서드 적용으로 변경
+    func updatePurchaseButtonState() {
+        let isEnabled = cartViewModel.isPurchaseAvailable
+        purchaseButton.isEnabled = isEnabled
+        purchaseButton.backgroundColor = isEnabled ? .systemBlue : .systemGray3
+        purchaseButton.alpha = isEnabled ? 1.0 : 0.5
     }
 }
 
