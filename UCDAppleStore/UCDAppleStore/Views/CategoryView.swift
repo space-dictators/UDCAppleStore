@@ -5,7 +5,6 @@ import UIKit
 class CategoryView: UIView {
     // MARK: - Properties
 
-    private let viewModel = CategoryViewModel()
     private var categories: [Category] = Category.allCategories
     private var categoryButtons: [UCDButton] = []
 
@@ -20,7 +19,7 @@ class CategoryView: UIView {
     private let stackView = UIStackView().then {
         $0.axis = .horizontal
         $0.spacing = 8
-        $0.distribution = .fill
+        $0.distribution = .fillEqually
         $0.isLayoutMarginsRelativeArrangement = true
         $0.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     }
@@ -75,10 +74,9 @@ class CategoryView: UIView {
             categoryButtons.append(button)
             stackView.addArrangedSubview(button)
         }
-        updateButtons(selectedCategory: viewModel.selectedCategory)
     }
 
-    private func updateButtons(selectedCategory: Category) {
+    func updateUI(selectedCategory: Category) {
         for (index, button) in categoryButtons.enumerated() {
             if categories[index] == selectedCategory {
                 button.isSelected = true
@@ -94,8 +92,6 @@ class CategoryView: UIView {
     private func categoryButtonDidTap(_ sender: UCDButton) {
         let selectedCategory = categories[sender.tag]
         print("\(selectedCategory) 버튼 탭")
-        viewModel.selectCategory(selectedCategory)
-        updateButtons(selectedCategory: viewModel.selectedCategory)
         delegate?.categoryViewDidSelectCategory(selectedCategory)
     }
 }
