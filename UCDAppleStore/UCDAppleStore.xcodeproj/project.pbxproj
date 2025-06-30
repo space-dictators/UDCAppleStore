@@ -6,12 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		5EF5841B2E116ECA008BF4EB /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5EF5841A2E116ECA008BF4EB /* Kingfisher */; };
-		B54BA78D2E0BD7B8001524C1 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B54BA78C2E0BD7B8001524C1 /* SnapKit */; };
-		B54BA7902E0BD7C0001524C1 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = B54BA78F2E0BD7C0001524C1 /* Then */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
 		B54BA7732E0BD720001524C1 /* UCDAppleStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UCDAppleStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -42,9 +36,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5EF5841B2E116ECA008BF4EB /* Kingfisher in Frameworks */,
-				B54BA78D2E0BD7B8001524C1 /* SnapKit in Frameworks */,
-				B54BA7902E0BD7C0001524C1 /* Then in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,9 +79,6 @@
 			);
 			name = UCDAppleStore;
 			packageProductDependencies = (
-				B54BA78C2E0BD7B8001524C1 /* SnapKit */,
-				B54BA78F2E0BD7C0001524C1 /* Then */,
-				5EF5841A2E116ECA008BF4EB /* Kingfisher */,
 			);
 			productName = UCDAppleStore;
 			productReference = B54BA7732E0BD720001524C1 /* UCDAppleStore.app */;
@@ -121,9 +109,9 @@
 			mainGroup = B54BA76A2E0BD720001524C1;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				B54BA78B2E0BD7B8001524C1 /* XCRemoteSwiftPackageReference "SnapKit" */,
-				B54BA78E2E0BD7C0001524C1 /* XCRemoteSwiftPackageReference "Then" */,
-				5EF584192E116ECA008BF4EB /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				5ED59F392E127D2D0004FE9B /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				5ED59F3A2E127DA10004FE9B /* XCRemoteSwiftPackageReference "Then" */,
+				5ED59F3B2E127DAB0004FE9B /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B54BA7742E0BD720001524C1 /* Products */;
@@ -380,23 +368,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		5EF584192E116ECA008BF4EB /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+		5ED59F392E127D2D0004FE9B /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 8.3.3;
 			};
 		};
-		B54BA78B2E0BD7B8001524C1 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.7.1;
-			};
-		};
-		B54BA78E2E0BD7C0001524C1 /* XCRemoteSwiftPackageReference "Then" */ = {
+		5ED59F3A2E127DA10004FE9B /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then.git";
 			requirement = {
@@ -404,25 +384,15 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		5ED59F3B2E127DAB0004FE9B /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		5EF5841A2E116ECA008BF4EB /* Kingfisher */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5EF584192E116ECA008BF4EB /* XCRemoteSwiftPackageReference "Kingfisher" */;
-			productName = Kingfisher;
-		};
-		B54BA78C2E0BD7B8001524C1 /* SnapKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B54BA78B2E0BD7B8001524C1 /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = SnapKit;
-		};
-		B54BA78F2E0BD7C0001524C1 /* Then */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B54BA78E2E0BD7C0001524C1 /* XCRemoteSwiftPackageReference "Then" */;
-			productName = Then;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B54BA76B2E0BD720001524C1 /* Project object */;
 }
