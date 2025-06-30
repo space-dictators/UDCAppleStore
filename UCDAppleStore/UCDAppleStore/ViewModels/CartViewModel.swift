@@ -84,8 +84,8 @@ final class CartViewModel {
                 item.quantity += 1
                 cartItems[index] = item
             } else {
-                // TODO: 10개 초과시 예외처리
-                print("10개 오버 예외처리")
+                // 10개 초과시 예외처리
+                onAlertTriggered?(.quantityLimitExceeded)
                 return
             }
         } else {
@@ -116,16 +116,14 @@ final class CartViewModel {
 
     // 수량 감소
     func decreaseQuantiy(for product: Product) {
-        // TODO: Alert - 최소 수량(0개) 미만
         guard let index = cartItems.firstIndex(where: { $0.product.id == product.id }) else {
             return // 비어있을 경우 아무것도 하지 않음
         }
 
         var item = cartItems[index]
 
-        if item.quantity == 0 {
-            // 이미 0개일 경우
-            onAlertTriggered?(.quantityAlreadyZero)
+        if item.quantity == 1 {
+            onAlertTriggered?(.confirmRemoveItem(item.product))
             return
         }
 
@@ -133,15 +131,19 @@ final class CartViewModel {
         cartItems[index] = item // 바뀐 값 재할당
     }
 
+    func removeItem(for product: Product) {
+        cartItems.removeAll { $0.product.id == product.id }
+    }
+
     // 카트 비우기
     func clearCart() {
-        // TODO: Alert - 확인 메시지 출력
         cartItems.removeAll()
     }
 }
 
 // Alert종류를 나타내는 enum
 enum CartAlertType {
-    case quantityLimitExceeded // 10개 초과시
-    case quantityAlreadyZero // 0개 미만시
+    case quantityLimitExceeded // 10개에서 +버튼을 눌렀을 때
+    case confirmRemoveItem(Product) // 수량 1개에서 -버튼 눌렀을 때 삭제 여부
+    case confirmClearCart // 초기화 버튼을 눌렀을 때
 }
