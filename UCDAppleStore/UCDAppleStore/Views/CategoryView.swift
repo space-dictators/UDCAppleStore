@@ -1,10 +1,3 @@
-//
-//  CategoryView.swift
-//  UCDAppleStore
-//
-//  Created by Milou on 6/25/25.
-//
-
 import SnapKit
 import Then
 import UIKit
@@ -14,7 +7,7 @@ class CategoryView: UIView {
 
     private let viewModel = CategoryViewModel()
     private var categories: [Category] = Category.allCategories
-    private var categoryButtons: [UIButton] = []
+    private var categoryButtons: [UCDButton] = []
 
     weak var delegate: CategoryViewDelegate?
 
@@ -27,7 +20,7 @@ class CategoryView: UIView {
     private let stackView = UIStackView().then {
         $0.axis = .horizontal
         $0.spacing = 8
-        $0.distribution = .fillEqually
+        $0.distribution = .fill
         $0.isLayoutMarginsRelativeArrangement = true
         $0.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     }
@@ -70,11 +63,8 @@ class CategoryView: UIView {
         categoryButtons.removeAll()
 
         for (index, category) in categories.enumerated() {
-            let button = UIButton(type: .system).then {
-                $0.setTitle(category.titleName, for: .normal)
-                $0.backgroundColor = .white
-                $0.setTitleColor(.label, for: .normal)
-                $0.layer.cornerRadius = 20
+            let button = UCDButton(style: .category).then {
+                $0.setTitle = category.titleName
                 $0.tag = index
                 $0.addTarget(
                     self,
@@ -91,9 +81,9 @@ class CategoryView: UIView {
     private func updateButtons(selectedCategory: Category) {
         for (index, button) in categoryButtons.enumerated() {
             if categories[index] == selectedCategory {
-                button.backgroundColor = .systemBlue
+                button.isSelected = true
             } else {
-                button.backgroundColor = .white
+                button.isSelected = false
             }
         }
     }
@@ -101,10 +91,16 @@ class CategoryView: UIView {
     // MARK: - Actions
 
     @objc
-    private func categoryButtonDidTap(_ sender: UIButton) {
+    private func categoryButtonDidTap(_ sender: UCDButton) {
         let selectedCategory = categories[sender.tag]
+        print("\(selectedCategory) 버튼 탭")
         viewModel.selectCategory(selectedCategory)
         updateButtons(selectedCategory: viewModel.selectedCategory)
         delegate?.categoryViewDidSelectCategory(selectedCategory)
     }
+}
+
+@available(iOS 17.0, *)
+#Preview {
+    CategoryView()
 }
