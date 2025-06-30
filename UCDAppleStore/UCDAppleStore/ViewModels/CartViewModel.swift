@@ -61,7 +61,7 @@ final class CartViewModel {
     // MARK: Properties
 
     var totalPriceText: String {
-        "\(cartItems.reduce(0) { $0 + $1.totalPrice })원"
+        "총액 : \(cartItems.reduce(0) { $0 + $1.totalPrice }.formattedWithComma)원"
     }
 
     var purchaseButtonTitle: String {
