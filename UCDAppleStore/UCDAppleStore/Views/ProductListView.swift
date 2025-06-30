@@ -9,11 +9,9 @@ import SnapKit
 import Then
 import UIKit
 
-class ProductListView: UIView, CategoryViewDelegate {
+class ProductListView: UIView {
     // MARK: - Properties
 
-    private let categoryView = CategoryView()
-    private var allProducts: [Product] = []
     private var products: [Product] = []
     private var collectionView: UICollectionView!
 
@@ -33,7 +31,6 @@ class ProductListView: UIView, CategoryViewDelegate {
 
     /// 외부에서 products 배열을 전달받고 갱신하는 메서드
     func reload(products: [Product]) {
-        allProducts = products
         self.products = products
         collectionView.reloadData()
     }
@@ -43,20 +40,10 @@ class ProductListView: UIView, CategoryViewDelegate {
     private func setupUI() {
         setupCollectionView()
 
-        categoryView.delegate = self
-
-        addSubview(categoryView)
         addSubview(collectionView)
 
-        categoryView.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(60)
-        }
-
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(categoryView.snp.bottom)
-            $0.leading.trailing.bottom.equalTo(safeAreaLayoutGuide)
+            $0.edges.equalTo(safeAreaLayoutGuide)
         }
     }
 
@@ -104,20 +91,12 @@ class ProductListView: UIView, CategoryViewDelegate {
         }
 
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout).then {
-            $0.backgroundColor = .white
+            $0.backgroundColor = .background
             $0.isPagingEnabled = true
             $0.showsHorizontalScrollIndicator = false
             $0.register(ProductCell.self, forCellWithReuseIdentifier: "ProductCell")
             $0.dataSource = self
         }
-    }
-
-    // MARK: - CategoryViewDelegate
-
-    func categoryViewDidSelectCategory(_ category: Category) {
-        let filtered = allProducts.filter { $0.category == category }
-        products = filtered
-        collectionView.reloadData()
     }
 }
 

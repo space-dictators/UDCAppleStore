@@ -7,20 +7,24 @@ class MainViewController: UIViewController {
     // MARK: - Properties
 
     private let categoryViewModel = CategoryViewModel()
+    private let productViewModel = ProductViewModel()
     private let cartViewModel = CartViewModel()
 
     private var categoryView = CategoryView()
+    private var productListView = ProductListView()
     private var cartView = CartView()
-    private var productView = UIView().then {
-        $0.backgroundColor = .background
-    }
+
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         bindViewModels()
+        loadInitialData()
         presentCartView()
     }
+
+    // MARK: - Private Methods
 
     private func bindViewModels() {
         categoryViewModel.onCategoryChanged = { [weak self] category in
@@ -28,15 +32,29 @@ class MainViewController: UIViewController {
                 print("Category changed to: \(category)")
 
                 self?.categoryView.updateUI(selectedCategory: category)
-                // TODO: 프로덕트로직 추가
+                self?.productViewModel.filterProducts(by: category)
+            }
+        }
+
+        productViewModel.onDataUpdated = { [weak self] in
+            DispatchQueue.main.async {
+                let products = self?.productViewModel.products ?? []
+                self?.productListView.reload(products: products)
             }
         }
     }
+
+    private func loadInitialData() {
+        productViewModel.fetchProducts()
+    }
+
+    // MARK: - Setup Methods
 
     private func setupViews() {
         view.backgroundColor = .background
         setupNavigationBar()
         setupCategoryView()
+        setupProductListView()
     }
 
     private func setupNavigationBar() {
@@ -56,6 +74,15 @@ class MainViewController: UIViewController {
         }
 
         categoryViewModel.onCategoryChanged?(.iphone)
+    }
+
+    private func setupProductListView() {
+        view.addSubview(productListView)
+
+        productListView.snp.makeConstraints {
+            $0.top.equalTo(categoryView.snp.bottom)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
     }
 
     // MARK: - Public Methods
@@ -82,6 +109,10 @@ extension MainViewController: CategoryViewDelegate {
 }
 
 extension MainViewController: CartViewDelegate {
+    func cartViewShouldShowAlert(_: CartAlertType) {
+        print("alertClicked")
+    }
+
     func cartCellDidIncreaseQuantity(for product: Product) {
         cartViewModel.increaseQuantiy(for: product)
     }
