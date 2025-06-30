@@ -14,7 +14,7 @@ class CartView: UIView {
 
     let totalPriceLabel = UILabel().then {
         $0.font = .boldSystemFont(ofSize: 20)
-        $0.textColor = UIColor(named: "TextColor")
+        $0.textColor = .ucdText
         $0.textAlignment = .right
     }
 

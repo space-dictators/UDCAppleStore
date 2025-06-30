@@ -40,7 +40,7 @@ class CategoryView: UIView {
     // MARK: - Setup Methods
 
     private func setupUI() {
-        backgroundColor = .background
+        backgroundColor = .ucdBackground
 
         addSubview(scrollView)
         scrollView.addSubview(stackView)

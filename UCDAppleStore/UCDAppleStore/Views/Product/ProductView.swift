@@ -31,7 +31,7 @@ class ProductView: UIView {
         let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .regular)
         let image = UIImage(systemName: "cart", withConfiguration: config)
         $0.setImage(image, for: .normal)
-        $0.tintColor = .text
+        $0.tintColor = .ucdText
     }
 
     private let infoStack = UIStackView().then {

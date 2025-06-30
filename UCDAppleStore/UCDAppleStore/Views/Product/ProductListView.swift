@@ -120,7 +120,7 @@ class ProductListView: UIView {
         }
 
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout).then {
-            $0.backgroundColor = .background
+            $0.backgroundColor = .ucdBackground
             $0.isPagingEnabled = true
             $0.showsHorizontalScrollIndicator = false
             $0.showsVerticalScrollIndicator = false

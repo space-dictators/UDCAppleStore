@@ -22,7 +22,7 @@ class ProductCell: UICollectionViewCell {
         contentView.layer.borderColor = UIColor.systemGray4.cgColor
         contentView.layer.borderWidth = 1
         contentView.layer.cornerRadius = 8
-        contentView.backgroundColor = .cell
+        contentView.backgroundColor = .ucdCell
         contentView.clipsToBounds = true
 
         setupAction()
