@@ -6,7 +6,7 @@ import Then
 
 class CartView: UIView {
     // MARK: Properties
-    
+
     private var cartItems: [CartItem] = []
     weak var delegate: CartViewDelegate?
 
@@ -61,14 +61,14 @@ class CartView: UIView {
 
         // 1. 총합 레이블: 최상단에 고정
         totalPriceLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(16)
+            $0.top.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().inset(16)
         }
 
         // 2. 하단 버튼들: 아래에 고정
         resetButton.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(16)
-            $0.bottom.equalToSuperview().inset(16)
+            $0.bottom.equalToSuperview().inset(40)
             $0.trailing.equalTo(purchaseButton.snp.leading).offset(-8)
             $0.height.equalTo(44)
             $0.width.equalTo(purchaseButton)
@@ -76,7 +76,7 @@ class CartView: UIView {
 
         purchaseButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalToSuperview().inset(16)
+            $0.bottom.equalToSuperview().inset(40)
             $0.height.equalTo(44)
         }
 

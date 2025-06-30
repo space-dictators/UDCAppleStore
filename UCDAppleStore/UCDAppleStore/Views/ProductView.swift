@@ -4,8 +4,14 @@ import Then
 import UIKit
 
 class ProductView: UIView {
+    // 이미지 컨테이너 뷰 추가
+    private let imageContainerView = UIView().then {
+        $0.backgroundColor = .white
+        $0.layer.cornerRadius = 8
+    }
+
     private let imageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFill
+        $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
     }
 
@@ -54,8 +60,10 @@ class ProductView: UIView {
     }
 
     private func setupUI() {
-        addSubview(imageView)
+        addSubview(imageContainerView)
         addSubview(bottomStack)
+
+        imageContainerView.addSubview(imageView)
 
         // StackView 구성
         infoStack.addArrangedSubview(nameLabel)
@@ -64,18 +72,23 @@ class ProductView: UIView {
         bottomStack.addArrangedSubview(infoStack)
         bottomStack.addArrangedSubview(cartButton)
 
-        // 이미지
+        // 이미지 컨테이너 - 셀 전체 너비로 확장
+        imageContainerView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview().inset(8)
+            make.bottom.equalTo(bottomStack.snp.top).offset(-8)
+        }
+
+        // 이미지뷰 - 컨테이너 내에서 적당한 크기로 중앙 배치
         imageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(8)
-            make.centerX.equalToSuperview()
-            make.width.height.equalToSuperview().multipliedBy(0.6)
+            make.center.equalToSuperview()
+            make.width.height.equalToSuperview().multipliedBy(0.8)
         }
 
         // 아래쪽 Stack
         bottomStack.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview().inset(8)
             make.bottom.lessThanOrEqualToSuperview().offset(-8)
+            make.height.equalTo(54)
         }
 
         cartButton.snp.makeConstraints { make in

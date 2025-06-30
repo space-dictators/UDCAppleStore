@@ -123,6 +123,8 @@ class ProductListView: UIView {
             $0.backgroundColor = .background
             $0.isPagingEnabled = true
             $0.showsHorizontalScrollIndicator = false
+            $0.showsVerticalScrollIndicator = false
+            $0.alwaysBounceVertical = false
             $0.register(ProductCell.self, forCellWithReuseIdentifier: "ProductCell")
             $0.dataSource = self
             $0.delegate = self

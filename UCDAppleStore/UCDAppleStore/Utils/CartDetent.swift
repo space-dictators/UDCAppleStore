@@ -8,7 +8,7 @@ enum CartDetent: String, CaseIterable {
     var detent: UISheetPresentationController.Detent {
         switch self {
         case .low:
-            return .custom(identifier: .init(rawValue)) { _ in 100 }
+            return .custom(identifier: .init(rawValue)) { _ in 120 }
         case .middle:
             return .custom(identifier: .init(rawValue)) { context in
                 context.maximumDetentValue * 0.3
