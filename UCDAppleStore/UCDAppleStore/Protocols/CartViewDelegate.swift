@@ -1,26 +1,11 @@
-
 //
-//  Protocols.swift
+//  CartViewDelegate.swift
 //  UCDAppleStore
 //
-//  Created by Milou on 6/26/25.
+//  Created by Milou on 7/1/25.
 //
 
 import Foundation
-
-/// CategoryView에서 누른 카테고리 버튼을 MainViewController에 알립니다.
-protocol CategoryViewDelegate: AnyObject {
-    /// 사용자가 카테고리 버튼을 눌렀을 때 호출됩니다
-    /// - Parameter category: 선택된 카테고리 (iPhone, iPad, MacBook, Mac, Accessories)
-    func categoryViewDidSelectCategory(_ category: Category)
-}
-
-/// ProductView에서 카트에 담긴 상품을 MainViewController에 알립니다.
-protocol ProductListViewDelegate: AnyObject {
-    /// 사용자가 상품의 장바구니 버튼을 탭했을 때 호출됩니다
-    /// - Parameter product: 장바구니에 추가할 상품 정보
-    func productViewDidTapAddToCart(_ product: Product)
-}
 
 /// CartCell에서 상품 수량 변경(+,-)을 MainViewController에 알립니다.
 /// CartView에서 취소를 MainViewController에 알립니다.
