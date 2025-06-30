@@ -41,6 +41,8 @@ class ProductView: UIView {
         $0.distribution = .equalSpacing
     }
 
+    var onCartButtonTapped: (() -> Void)?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -79,11 +81,18 @@ class ProductView: UIView {
         cartButton.snp.makeConstraints { make in
             make.size.equalTo(24)
         }
+
+        cartButton.addTarget(self, action: #selector(cartButtonTapped), for: .touchUpInside)
     }
 
     func configure(with product: Product) {
         nameLabel.text = product.name
         priceLabel.text = "\(product.price) 원"
         imageView.loadImage(from: product.imageURL)
+    }
+
+    @objc
+    private func cartButtonTapped() {
+        onCartButtonTapped?()
     }
 }

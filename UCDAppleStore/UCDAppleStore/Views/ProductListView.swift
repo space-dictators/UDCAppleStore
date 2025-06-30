@@ -15,6 +15,8 @@ class ProductListView: UIView {
     private var products: [Product] = []
     private var collectionView: UICollectionView!
 
+    weak var delegate: ProductViewDelegate?
+
     // MARK: - Init
 
     override init(frame: CGRect) {
@@ -114,6 +116,11 @@ extension ProductListView: UICollectionViewDataSource {
 
         let product = products[indexPath.item]
         cell.configure(with: product)
+
+        cell.onCartButtonTapped = { [weak self] in
+            print("🛒 장바구니행: \(product.name)")
+            self?.delegate?.productViewDidTapAddToCart(product)
+        }
         return cell
     }
 }
