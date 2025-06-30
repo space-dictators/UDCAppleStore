@@ -146,7 +146,6 @@ extension ProductListView: UICollectionViewDataSource {
             cell.isHidden = false
             cell.configure(with: product)
             cell.onCartButtonTapped = { [weak self] in
-                print("🛒 장바구니행: \(product.name)")
                 self?.delegate?.productViewDidTapAddToCart(product)
             }
         } else {

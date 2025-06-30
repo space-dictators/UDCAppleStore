@@ -91,7 +91,6 @@ class CategoryView: UIView {
     @objc
     private func categoryButtonDidTap(_ sender: UCDButton) {
         let selectedCategory = categories[sender.tag]
-        print("\(selectedCategory) 버튼 탭")
         delegate?.categoryViewDidSelectCategory(selectedCategory)
     }
 }

@@ -38,7 +38,6 @@ final class CartViewModel {
                 cartItems[index] = item
             } else {
                 // 10개 초과시 예외처리
-                print("🚨 수량 초과 알러트")
                 onAlertTriggered?(.quantityLimitExceeded)
                 return
             }
@@ -62,7 +61,6 @@ final class CartViewModel {
 
         if item.quantity >= 10 { // 이미 10개 이상이라면
             // 최대 수량(10개) 초과
-            print("🚨 수량 초과 알러트")
             onAlertTriggered?(.quantityLimitExceeded)
             return
         }
@@ -81,7 +79,6 @@ final class CartViewModel {
         var item = cartItems[index]
 
         if item.quantity == 1 {
-            print("🚨 삭제 알러트")
             onAlertTriggered?(.confirmRemoveItem(item.product))
             return
         }
