@@ -8,12 +8,20 @@
 import Foundation
 
 class ProductViewModel {
+    private var allProducts: [Product] = []
     private(set) var products: [Product] = []
 
     var onDataUpdated: (() -> Void)?
 
     func fetchProducts() {
-        products = DataService.shared.loadProducts()
+        let loadedProducts = DataService.shared.loadProducts()
+        allProducts = loadedProducts
+        products = loadedProducts
+        onDataUpdated?()
+    }
+
+    func filterProducts(by category: Category) {
+        products = allProducts.filter { $0.category == category }
         onDataUpdated?()
     }
 

@@ -5,7 +5,7 @@ import UIKit
 
 class ProductView: UIView {
     private let imageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFit
+        $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
     }
 
@@ -25,7 +25,7 @@ class ProductView: UIView {
         let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .regular)
         let image = UIImage(systemName: "cart", withConfiguration: config)
         $0.setImage(image, for: .normal)
-        $0.tintColor = .black
+        $0.tintColor = .text
     }
 
     private let infoStack = UIStackView().then {
