@@ -24,16 +24,9 @@ class CartView: UIView {
         $0.textAlignment = .right
     }
 
-    let cancelButton = UIButton().then {
-        $0.setTitle("초기화", for: .normal)
-        $0.setTitleColor(.white, for: .normal)
-        $0.backgroundColor = .systemGray4
-    }
+    let resetButton = UCDButton(style: .reset)
 
-    let purchaseButton = UIButton().then {
-        $0.setTitleColor(.white, for: .normal)
-        $0.backgroundColor = .systemBlue
-    }
+    let purchaseButton = UCDButton(style: .checkout)
 
     let cartCollectionView = UICollectionView(
         frame: .zero,
@@ -56,7 +49,8 @@ class CartView: UIView {
         setupView()
         updateTotalPriceText()
         updatePurchaseButtonTitle()
-        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        resetButton.setTitle = "초기화"
+        resetButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         purchaseButton.addTarget(self, action: #selector(purchaseButtonTapped), for: .touchUpInside)
         cartViewModel.onAlertTriggered = { [weak self] alertType in
             self?.delegate?.cartViewShouldShowAlert(alertType)
@@ -72,7 +66,7 @@ class CartView: UIView {
 
     func setupView() {
         addSubview(totalPriceLabel)
-        addSubview(cancelButton)
+        addSubview(resetButton)
         addSubview(purchaseButton)
         addSubview(cartCollectionView)
 
@@ -83,7 +77,7 @@ class CartView: UIView {
         }
 
         // 2. 하단 버튼들: 아래에 고정
-        cancelButton.snp.makeConstraints {
+        resetButton.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(16)
             $0.bottom.equalToSuperview().inset(16)
             $0.trailing.equalTo(purchaseButton.snp.leading).offset(-8)
@@ -101,14 +95,14 @@ class CartView: UIView {
         cartCollectionView.snp.makeConstraints {
             $0.top.equalTo(totalPriceLabel.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalTo(cancelButton.snp.top).offset(-12)
+            $0.bottom.equalTo(resetButton.snp.top).offset(-12)
         }
     }
 
     // MARK: Methods
 
     func updatePurchaseButtonTitle() {
-        purchaseButton.setTitle(cartViewModel.purchaseButtonTitle, for: .normal)
+        purchaseButton.setTitle = cartViewModel.purchaseButtonTitle
         updatePurchaseButtonState()
     }
 
@@ -140,8 +134,7 @@ class CartView: UIView {
     func updatePurchaseButtonState() {
         let isEnabled = cartViewModel.isPurchaseAvailable
         purchaseButton.isEnabled = isEnabled
-        purchaseButton.backgroundColor = isEnabled ? .systemBlue : .systemGray3
-        purchaseButton.alpha = isEnabled ? 1.0 : 0.5
+        purchaseButton.alpha = isEnabled ? 1.0 : 0.5 // 투명도 조절
     }
 }
 
