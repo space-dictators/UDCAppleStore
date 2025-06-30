@@ -36,7 +36,7 @@ class ProductListView: UIView {
         self.products = products
         collectionView.reloadData()
 
-        let pages = Int(ceil(Double(products.count) / 4.0)) /
+        let pages = Int(ceil(Double(products.count) / 4.0))
         pageControl.numberOfPages = pages
         pageControl.currentPage = 0
     }
@@ -125,7 +125,7 @@ class ProductListView: UIView {
             $0.showsHorizontalScrollIndicator = false
             $0.register(ProductCell.self, forCellWithReuseIdentifier: "ProductCell")
             $0.dataSource = self
-            $0.delegate = self 
+            $0.delegate = self
         }
     }
 }

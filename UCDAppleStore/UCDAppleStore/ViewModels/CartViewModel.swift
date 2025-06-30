@@ -38,6 +38,7 @@ final class CartViewModel {
                 cartItems[index] = item
             } else {
                 // 10개 초과시 예외처리
+                print("🚨 수량 초과 알러트")
                 onAlertTriggered?(.quantityLimitExceeded)
                 return
             }
@@ -61,6 +62,7 @@ final class CartViewModel {
 
         if item.quantity >= 10 { // 이미 10개 이상이라면
             // 최대 수량(10개) 초과
+            print("🚨 수량 초과 알러트")
             onAlertTriggered?(.quantityLimitExceeded)
             return
         }
@@ -79,6 +81,7 @@ final class CartViewModel {
         var item = cartItems[index]
 
         if item.quantity == 1 {
+            print("🚨 삭제 알러트")
             onAlertTriggered?(.confirmRemoveItem(item.product))
             return
         }
@@ -98,11 +101,4 @@ final class CartViewModel {
         cartItems.removeAll()
         onCartUpdated?()
     }
-}
-
-// Alert종류를 나타내는 enum
-enum CartAlertType {
-    case quantityLimitExceeded // 10개에서 +버튼을 눌렀을 때
-    case confirmRemoveItem(Product) // 수량 1개에서 -버튼 눌렀을 때 삭제 여부
-    case confirmClearCart // 초기화 버튼을 눌렀을 때
 }

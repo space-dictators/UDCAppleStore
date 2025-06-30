@@ -48,6 +48,12 @@ class MainViewController: UIViewController {
                 self?.updateCartView()
             }
         }
+
+        cartViewModel.onAlertTriggered = { [weak self] alertType in
+            DispatchQueue.main.async {
+                self?.handleCartAlert(alertType)
+            }
+        }
     }
 
     private func loadInitialData() {
@@ -101,6 +107,18 @@ class MainViewController: UIViewController {
         )
     }
 
+    private func handleCartAlert(_ alertType: CartAlertType) {
+        guard let cartViewController = cartViewController else { return }
+
+        alertType.showAlert(on: cartViewController) { [weak self] product in
+            if let product = product {
+                self?.cartViewModel.removeItem(for: product)
+            } else {
+                self?.cartViewModel.clearCart()
+            }
+        }
+    }
+
     // MARK: - Public Methods
 
     func presentCartView() {
@@ -141,8 +159,8 @@ extension MainViewController: ProductListViewDelegate {
 }
 
 extension MainViewController: CartViewDelegate {
-    func cartViewShouldShowAlert(_: CartAlertType) {
-        print("alertClicked")
+    func cartViewShouldShowAlert(_ alertType: CartAlertType) {
+        handleCartAlert(alertType)
     }
 
     func cartCellDidIncreaseQuantity(for product: Product) {
@@ -154,6 +172,6 @@ extension MainViewController: CartViewDelegate {
     }
 
     func cartViewDidTapCancel() {
-        cartViewModel.clearCart()
+        handleCartAlert(.confirmClearCart)
     }
 }
