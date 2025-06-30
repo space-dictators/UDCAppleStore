@@ -19,8 +19,8 @@ class CartView: UIView {
     // MARK: UI Components
 
     let totalPriceLabel = UILabel().then {
-        $0.font = .boldSystemFont(ofSize: 16)
-        $0.textColor = .black
+        $0.font = .boldSystemFont(ofSize: 20)
+        $0.textColor = UIColor(named: "TextColor")
         $0.textAlignment = .right
     }
 
@@ -28,6 +28,7 @@ class CartView: UIView {
 
     let purchaseButton = UCDButton(style: .checkout)
 
+    // TODO: UICollectionViewCompositionalLayout -> ListLayout으로 변경
     let cartCollectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout()
@@ -35,7 +36,6 @@ class CartView: UIView {
         let layout = UICollectionViewFlowLayout() // 수직 스크롤형태
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 16 // 셀 간 여백
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width - 32, height: 80) // 임시 아이템 사이즈 지정
         $0.collectionViewLayout = layout
         $0.backgroundColor = .clear
     }
@@ -46,6 +46,7 @@ class CartView: UIView {
         super.init(frame: frame)
         cartCollectionView.register(CartItemCell.self, forCellWithReuseIdentifier: CartItemCell.reuseIdentifier)
         cartCollectionView.dataSource = self
+        cartCollectionView.delegate = self
         setupView()
         updateTotalPriceText()
         updatePurchaseButtonTitle()
@@ -164,5 +165,14 @@ extension CartView: UICollectionViewDataSource {
             self?.delegate?.cartCellDidDecreaseQuantity(for: item.product)
         }
         return cell
+    }
+}
+
+// TODO: UICollectionViewCompositionalLayout -> ListLayout 으로 변경시에는 삭제
+extension CartView: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, sizeForItemAt _: IndexPath) -> CGSize {
+        return CGSize(
+            width: collectionView.frame.width, height: 102
+        )
     }
 }
