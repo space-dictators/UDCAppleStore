@@ -12,6 +12,10 @@ class CartView: UIView {
 
     weak var delegate: CartViewDelegate?
 
+    // MARK: Closuer
+
+    var onCartUpdated: (() -> Void)?
+
     // MARK: UI Components
 
     let totalPriceLabel = UILabel().then {
@@ -117,6 +121,7 @@ class CartView: UIView {
         cartCollectionView.reloadData()
         updateTotalPriceText()
         updatePurchaseButtonTitle()
+        onCartUpdated?()
     }
 
     // MARK: Actions
