@@ -6,22 +6,56 @@ import Then
 class MainViewController: UIViewController {
     // MARK: - Properties
 
-    private let cartView = CartView()
-    private let productView = UIView().then {
-        $0.backgroundColor = .ucdBackground
+    private let categoryViewModel = CategoryViewModel()
+    private let cartViewModel = CartViewModel()
+
+    private var categoryView = CategoryView()
+    private var cartView = CartView()
+    private var productView = UIView().then {
+        $0.backgroundColor = .background
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBaseUI()
+        setupViews()
+        bindViewModels()
         presentCartView()
     }
 
-    func setupBaseUI() {
-        view.backgroundColor = .ucdBackground
+    private func bindViewModels() {
+        categoryViewModel.onCategoryChanged = { [weak self] category in
+            DispatchQueue.main.async {
+                print("Category changed to: \(category)")
+
+                self?.categoryView.updateUI(selectedCategory: category)
+                // TODO: 프로덕트로직 추가
+            }
+        }
+    }
+
+    private func setupViews() {
+        view.backgroundColor = .background
+        setupNavigationBar()
+        setupCategoryView()
+    }
+
+    private func setupNavigationBar() {
         title = " UCD Apple Store"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
+    }
+
+    private func setupCategoryView() {
+        categoryView.delegate = self
+        view.addSubview(categoryView)
+
+        categoryView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(44)
+        }
+
+        categoryViewModel.onCategoryChanged?(.iphone)
     }
 
     // MARK: - Public Methods
@@ -38,5 +72,25 @@ class MainViewController: UIViewController {
             cartViewController.isModalInPresentation = true
         }
         present(cartViewController, animated: true)
+    }
+}
+
+extension MainViewController: CategoryViewDelegate {
+    func categoryViewDidSelectCategory(_ category: Category) {
+        categoryViewModel.selectCategory(category)
+    }
+}
+
+extension MainViewController: CartViewDelegate {
+    func cartCellDidIncreaseQuantity(for product: Product) {
+        cartViewModel.increaseQuantiy(for: product)
+    }
+
+    func cartCellDidDecreaseQuantity(for product: Product) {
+        cartViewModel.decreaseQuantiy(for: product)
+    }
+
+    func cartViewDidTapCancel() {
+        cartViewModel.clearCart()
     }
 }
