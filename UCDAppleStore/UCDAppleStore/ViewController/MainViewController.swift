@@ -62,7 +62,7 @@ class MainViewController: UIViewController {
     // MARK: - Setup Methods
 
     private func setupViews() {
-        view.backgroundColor = .background
+        view.backgroundColor = .ucdBackground
         setupNavigationBar()
         setupCategoryView()
         setupProductListView()

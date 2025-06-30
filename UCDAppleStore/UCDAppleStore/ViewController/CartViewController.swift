@@ -12,7 +12,7 @@ class CartViewController: UIViewController {
     }
 
     private func setupUI() {
-        view.backgroundColor = .background
+        view.backgroundColor = .ucdBackground
         view.addSubview(cartView)
 
         cartView.snp.makeConstraints {
