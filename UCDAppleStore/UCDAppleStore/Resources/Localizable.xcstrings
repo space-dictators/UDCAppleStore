@@ -82,7 +82,6 @@
       }
     },
     "초기화" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

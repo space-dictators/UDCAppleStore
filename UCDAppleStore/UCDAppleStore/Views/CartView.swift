@@ -5,17 +5,10 @@ import SnapKit
 import Then
 
 class CartView: UIView {
-    // 테스트용 임시 카트뷰모델 생성
-    //    let cartViewModel = CartViewModel()
-    private var cartItems: [CartItem] = []
-
     // MARK: Properties
-
+    
+    private var cartItems: [CartItem] = []
     weak var delegate: CartViewDelegate?
-
-    // MARK: Closuer
-
-    //    var onCartUpdated: (() -> Void)?
 
     // MARK: UI Components
 
@@ -26,7 +19,6 @@ class CartView: UIView {
     }
 
     let resetButton = UCDButton(style: .reset)
-
     let purchaseButton = UCDButton(style: .checkout)
 
     // TODO: UICollectionViewCompositionalLayout -> ListLayout으로 변경
@@ -49,14 +41,9 @@ class CartView: UIView {
         cartCollectionView.dataSource = self
         cartCollectionView.delegate = self
         setupView()
-//        updateTotalPriceText()
-//        updatePurchaseButtonTitle()
-        resetButton.setTitle = "초기화"
+        resetButton.setTitle = .localized("초기화")
         resetButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         purchaseButton.addTarget(self, action: #selector(purchaseButtonTapped), for: .touchUpInside)
-        //        cartViewModel.onAlertTriggered = { [weak self] alertType in
-        //            self?.delegate?.cartViewShouldShowAlert(alertType)
-        //        }
     }
 
     @available(*, unavailable)
@@ -103,21 +90,10 @@ class CartView: UIView {
 
     // MARK: Methods
 
-    //    func updatePurchaseButtonTitle() {
-    ////        purchaseButton.setTitle = cartViewModel.purchaseButtonTitle
-    //        updatePurchaseButtonState()
-    //    }
-    //
-    //    func updateTotalPriceText() {
-    ////        totalPriceLabel.text = cartViewModel.totalPriceText
-    //    }
-
     // 장바구니 리로드 함수 추가
     func reloadCartUI(items: [CartItem], totalPriceText: String, purchaseButtonTitle: String, isPurchaseEnabled: Bool) {
         cartItems = items
         cartCollectionView.reloadData()
-        //        updateTotalPriceText()
-        //        updatePurchaseButtonTitle()
         totalPriceLabel.text = totalPriceText
         purchaseButton.setTitle = purchaseButtonTitle
         purchaseButton.isEnabled = isPurchaseEnabled
@@ -134,13 +110,6 @@ class CartView: UIView {
     @objc
     private func purchaseButtonTapped() {
         // TODO: 프로토콜 구현시 연결
-    }
-
-    // TODO: UCD 버튼스타일 통합시 스타일 메서드 적용으로 변경
-    func updatePurchaseButtonState() {
-        //        let isEnabled = cartViewModel.isPurchaseAvailable
-        //        purchaseButton.isEnabled = isEnabled
-        //        purchaseButton.alpha = isEnabled ? 1.0 : 0.5 // 투명도 조절
     }
 }
 
