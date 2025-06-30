@@ -50,7 +50,7 @@ class CartView: UIView {
         setupView()
         updateTotalPriceText()
         updatePurchaseButtonTitle()
-        resetButton.setTitle = "초기화"
+        resetButton.setTitle = .localized("초기화")
         resetButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         purchaseButton.addTarget(self, action: #selector(purchaseButtonTapped), for: .touchUpInside)
         cartViewModel.onAlertTriggered = { [weak self] alertType in

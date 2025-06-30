@@ -142,9 +142,9 @@ final class CartItemCell: UICollectionViewCell {
 
     func configure(with item: CartItem) {
         nameLabel.text = item.product.name
-        unitPriceLabel.text = "\(item.product.price.formattedWithComma)원"
+        unitPriceLabel.text = .localized("\(item.product.price.formattedWithComma)원")
         quantityLabel.text = "\(item.quantity)"
-        totalPriceLabel.text = "\(item.totalPrice.formattedWithComma)원"
+        totalPriceLabel.text = .localized("\(item.totalPrice.formattedWithComma)원")
     }
 
     // MARK: Actions
