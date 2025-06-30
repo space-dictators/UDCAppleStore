@@ -29,8 +29,6 @@ class MainViewController: UIViewController {
     private func bindViewModels() {
         categoryViewModel.onCategoryChanged = { [weak self] category in
             DispatchQueue.main.async {
-                print("Category changed to: \(category)")
-
                 self?.categoryView.updateUI(selectedCategory: category)
                 self?.productViewModel.filterProducts(by: category)
             }
@@ -58,6 +56,7 @@ class MainViewController: UIViewController {
 
     private func loadInitialData() {
         productViewModel.fetchProducts()
+        productViewModel.filterProducts(by: categoryViewModel.selectedCategory)
     }
 
     // MARK: - Setup Methods
@@ -84,8 +83,7 @@ class MainViewController: UIViewController {
             $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(44)
         }
-
-        categoryViewModel.onCategoryChanged?(.iphone)
+        categoryView.updateUI(selectedCategory: categoryViewModel.selectedCategory)
     }
 
     private func setupProductListView() {
