@@ -2,7 +2,7 @@
 UCDAppleStore는 고가의 애플 제품들을 손쉽게 주문할 수 있도록 구성한 애플 스토어 전용 키오스크 앱입니다.
 
 ## 🗓️ 프로젝트 기간
-2025. 06. 26 ~ 2025. 07. 01
+2025년 6월 26 ~ 7월 1일
 
 ## 📱 주요 기능
 
@@ -10,7 +10,7 @@ UCDAppleStore는 고가의 애플 제품들을 손쉽게 주문할 수 있도록
 - **장바구니 관리**: 상품 추가/삭제, 수량 조절 (최대 10개)
 - **시트 기반 장바구니 UI**: 3단계 높이 조절 (Low/Middle/High)
 - **다국어 지원**: 한국어, 영어, 일본어
-- **커스텀 디자인 시스템**: UCDButton, 다크 모드 지원
+- **커스텀 디자인 시스템**: UCDButton, 다크 모드 대응
 
 ## 🏗️ 아키텍처
 
@@ -104,9 +104,9 @@ UCDAppleStore/
 ## 🏃 역할 분담
 | 팀원     | 역할                                                       |
 |----------|------------------------------------------------------------|
-| 윤승렬   | 장바구니 담당 (CartView, CartViewModel), 알림, 다국어 담당                                   |
-| 이서린   | 상품 목록 담당 (ProductListView, ProductViewModel)                         |
-| 양지영   | 아키텍처 설계, 카테고리, 장바구니 모달, 전체 연결 담당 (CategoryView, CategoryViewModel, MainViewController, DataService) |
+|  윤승렬    | 장바구니 담당 (CartView, CartViewModel), 알림, 다국어 담당         |
+|  이서린    | 상품 목록 담당 (ProductListView, ProductViewModel)             |
+|  양지영    | 아키텍처 설계, 카테고리, 장바구니 모달, 전체 연결 담당 (CategoryView, CategoryViewModel, MainViewController, DataService) |
 
 ## 🛠️ 기술 스택
 - Swift 5
