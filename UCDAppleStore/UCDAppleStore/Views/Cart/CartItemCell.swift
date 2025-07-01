@@ -26,13 +26,13 @@ final class CartItemCell: UICollectionViewCell {
 
     private let nameLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16, weight: .medium)
-        $0.textColor = UIColor(named: "TextColor")
+        $0.textColor = .ucdText
     }
 
     private let unitPriceLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 14)
         $0.textAlignment = .right
-        $0.textColor = UIColor(named: "TextColor")
+        $0.textColor = .ucdText
     }
 
     // 하단 스택뷰
@@ -45,19 +45,19 @@ final class CartItemCell: UICollectionViewCell {
     private let minusButton = UIButton().then {
         let configuration = UIImage.SymbolConfiguration(pointSize: 24)
         $0.setImage(UIImage(systemName: "minus.circle", withConfiguration: configuration), for: .normal)
-        $0.tintColor = UIColor(named: "TextColor")
+        $0.tintColor = .ucdText
     }
 
     private let quantityLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 18)
         $0.textAlignment = .center
-        $0.textColor = UIColor(named: "TextColor")
+        $0.textColor = .ucdText
     }
 
     private let plusButton = UIButton().then {
         let configuration = UIImage.SymbolConfiguration(pointSize: 24)
         $0.setImage(UIImage(systemName: "plus.circle", withConfiguration: configuration), for: .normal)
-        $0.tintColor = UIColor(named: "TextColor")
+        $0.tintColor = .ucdText
     }
 
     private let totalPriceLabel = UILabel().then {
@@ -66,7 +66,7 @@ final class CartItemCell: UICollectionViewCell {
     }
 
     private let separatorView = UIView().then {
-        $0.backgroundColor = UIColor(named: "TextColor")
+        $0.backgroundColor = .ucdText
     }
 
     // MARK: Initailizers
@@ -86,7 +86,7 @@ final class CartItemCell: UICollectionViewCell {
     // MARK: Setup Methods
 
     private func setupUI() {
-        contentView.backgroundColor = UIColor(named: "CartCellColor")
+        contentView.backgroundColor = .ucdCartCell
         contentView.layer.cornerRadius = 12
 
         // 상단 스택뷰

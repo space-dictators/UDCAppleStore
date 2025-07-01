@@ -10,6 +10,8 @@ class ProductListView: UIView {
     private var collectionView: UICollectionView!
     private let pageControl = UIPageControl()
 
+    weak var delegate: ProductListViewDelegate?
+
     // MARK: - Init
 
     override init(frame: CGRect) {
@@ -60,7 +62,7 @@ class ProductListView: UIView {
         }
 
         pageControl.snp.makeConstraints {
-            $0.bottom.equalTo(safeAreaLayoutGuide).inset(220)
+            $0.bottom.equalTo(safeAreaLayoutGuide).inset(200)
             $0.centerX.equalToSuperview()
             $0.height.equalTo(20)
         }
@@ -118,9 +120,11 @@ class ProductListView: UIView {
         }
 
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout).then {
-            $0.backgroundColor = .background
+            $0.backgroundColor = .ucdBackground
             $0.isPagingEnabled = true
             $0.showsHorizontalScrollIndicator = false
+            $0.showsVerticalScrollIndicator = false
+            $0.alwaysBounceVertical = false
             $0.register(ProductCell.self, forCellWithReuseIdentifier: "ProductCell")
             $0.dataSource = self
             $0.delegate = self
@@ -143,10 +147,12 @@ extension ProductListView: UICollectionViewDataSource {
         if let product = paddedProducts[indexPath.item] {
             cell.isHidden = false
             cell.configure(with: product)
+            cell.onCartButtonTapped = { [weak self] in
+                self?.delegate?.productViewDidTapAddToCart(product)
+            }
         } else {
             cell.isHidden = true // 빈 셀 숨기기
         }
-
         return cell
     }
 }
