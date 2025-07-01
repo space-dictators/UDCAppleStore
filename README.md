@@ -108,6 +108,15 @@ UCDAppleStore/
 |     이서린     | 상품 목록 담당 (ProductListView, ProductViewModel)             |
 |     양지영     | 아키텍처 설계, 카테고리, 장바구니 모달, 전체 연결 담당 (CategoryView, CategoryViewModel, MainViewController, DataService) |
 
+## 🏃 역할 분담
+
+| 팀원   | 역할 요약                          | 세부 담당 영역 |
+|--------|------------------------------------|----------------|
+| 윤승렬 | 장바구니, 알림, 다국어             | CartView, CartViewModel |
+| 이서린 | 상품 목록                          | ProductListView, ProductViewModel |
+| 양지영 | 아키텍처 설계, 카테고리, 전체 연결 | CategoryView, CategoryViewModel, MainViewController, DataService |
+
+
 ## 🛠️ 기술 스택
 - Swift 5
 - UIKit
