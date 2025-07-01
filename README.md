@@ -102,11 +102,11 @@ UCDAppleStore/
 ```
 
 ## 🏃 역할 분담
-| 팀원     | 역할                                                       |
-|----------|------------------------------------------------------------|
-|  윤승렬    | 장바구니 담당 (CartView, CartViewModel), 알림, 다국어 담당         |
-|  이서린    | 상품 목록 담당 (ProductListView, ProductViewModel)             |
-|  양지영    | 아키텍처 설계, 카테고리, 장바구니 모달, 전체 연결 담당 (CategoryView, CategoryViewModel, MainViewController, DataService) |
+|    팀원    | 역할                                                       |
+|-----------|------------------------------------------------------------|
+|    윤승렬    | 장바구니 담당 (CartView, CartViewModel), 알림, 다국어 담당         |
+|    이서린    | 상품 목록 담당 (ProductListView, ProductViewModel)             |
+|    양지영    | 아키텍처 설계, 카테고리, 장바구니 모달, 전체 연결 담당 (CategoryView, CategoryViewModel, MainViewController, DataService) |
 
 ## 🛠️ 기술 스택
 - Swift 5
