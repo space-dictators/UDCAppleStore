@@ -12,7 +12,7 @@ class MainViewController: UIViewController {
 
     private var categoryView = CategoryView()
     private var productListView = ProductListView()
-    private var cartView = CartView()
+    private var cartViewController: CartViewController?
 
     // MARK: - Lifecycle
 
@@ -29,8 +29,6 @@ class MainViewController: UIViewController {
     private func bindViewModels() {
         categoryViewModel.onCategoryChanged = { [weak self] category in
             DispatchQueue.main.async {
-                print("Category changed to: \(category)")
-
                 self?.categoryView.updateUI(selectedCategory: category)
                 self?.productViewModel.filterProducts(by: category)
             }
@@ -42,16 +40,29 @@ class MainViewController: UIViewController {
                 self?.productListView.reload(products: products)
             }
         }
+
+        cartViewModel.onCartUpdated = { [weak self] in
+            DispatchQueue.main.async {
+                self?.updateCartView()
+            }
+        }
+
+        cartViewModel.onAlertTriggered = { [weak self] alertType in
+            DispatchQueue.main.async {
+                self?.handleCartAlert(alertType)
+            }
+        }
     }
 
     private func loadInitialData() {
         productViewModel.fetchProducts()
+        productViewModel.filterProducts(by: categoryViewModel.selectedCategory)
     }
 
     // MARK: - Setup Methods
 
     private func setupViews() {
-        view.backgroundColor = .background
+        view.backgroundColor = .ucdBackground
         setupNavigationBar()
         setupCategoryView()
         setupProductListView()
@@ -72,11 +83,11 @@ class MainViewController: UIViewController {
             $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(44)
         }
-
-        categoryViewModel.onCategoryChanged?(.iphone)
+        categoryView.updateUI(selectedCategory: categoryViewModel.selectedCategory)
     }
 
     private func setupProductListView() {
+        productListView.delegate = self
         view.addSubview(productListView)
 
         productListView.snp.makeConstraints {
@@ -85,20 +96,50 @@ class MainViewController: UIViewController {
         }
     }
 
+    private func updateCartView() {
+        cartViewController?.updateCart(
+            items: cartViewModel.cartItems,
+            totalPriceText: cartViewModel.totalPriceText,
+            purchaseButtonTitle: cartViewModel.purchaseButtonTitle,
+            isPurchaseEnabled: cartViewModel.isPurchaseAvailable
+        )
+    }
+
+    private func handleCartAlert(_ alertType: CartAlertType) {
+        guard let cartViewController = cartViewController else { return }
+
+        alertType.showAlert(on: cartViewController) { [weak self] product in
+            if let product = product {
+                self?.cartViewModel.removeItem(for: product)
+            } else {
+                self?.cartViewModel.clearCart()
+            }
+        }
+    }
+
     // MARK: - Public Methods
 
     func presentCartView() {
-        let cartViewController = CartViewController()
+        let cartVC = CartViewController()
+        cartViewController = cartVC
 
-        if let sheet = cartViewController.sheetPresentationController {
+        cartVC.setCartDelegate(self)
+        cartVC.updateCart(
+            items: cartViewModel.cartItems,
+            totalPriceText: cartViewModel.totalPriceText,
+            purchaseButtonTitle: cartViewModel.purchaseButtonTitle,
+            isPurchaseEnabled: cartViewModel.isPurchaseAvailable
+        )
+
+        if let sheet = cartVC.sheetPresentationController {
             sheet.detents = [CartDetent.low, CartDetent.middle, CartDetent.high].map { $0.detent }
             sheet.selectedDetentIdentifier = CartDetent.low.identifier // 초기 높이
             sheet.prefersGrabberVisible = true
             sheet.prefersScrollingExpandsWhenScrolledToEdge = false // 내부 뷰 스크롤로 시트 확장
             sheet.largestUndimmedDetentIdentifier = .large
-            cartViewController.isModalInPresentation = true
+            cartVC.isModalInPresentation = true
         }
-        present(cartViewController, animated: true)
+        present(cartVC, animated: true)
     }
 }
 
@@ -108,9 +149,16 @@ extension MainViewController: CategoryViewDelegate {
     }
 }
 
+extension MainViewController: ProductListViewDelegate {
+    func productViewDidTapAddToCart(_ product: Product) {
+        let cartItem = CartItem(product: product, quantity: 1)
+        cartViewModel.addCartItem(cartItem)
+    }
+}
+
 extension MainViewController: CartViewDelegate {
-    func cartViewShouldShowAlert(_: CartAlertType) {
-        print("alertClicked")
+    func cartViewShouldShowAlert(_ alertType: CartAlertType) {
+        handleCartAlert(alertType)
     }
 
     func cartCellDidIncreaseQuantity(for product: Product) {
@@ -122,6 +170,6 @@ extension MainViewController: CartViewDelegate {
     }
 
     func cartViewDidTapCancel() {
-        cartViewModel.clearCart()
+        handleCartAlert(.confirmClearCart)
     }
 }

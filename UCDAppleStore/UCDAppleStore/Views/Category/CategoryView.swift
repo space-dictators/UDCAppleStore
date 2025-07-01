@@ -40,7 +40,7 @@ class CategoryView: UIView {
     // MARK: - Setup Methods
 
     private func setupUI() {
-        backgroundColor = .background
+        backgroundColor = .ucdBackground
 
         addSubview(scrollView)
         scrollView.addSubview(stackView)
@@ -91,7 +91,6 @@ class CategoryView: UIView {
     @objc
     private func categoryButtonDidTap(_ sender: UCDButton) {
         let selectedCategory = categories[sender.tag]
-        print("\(selectedCategory) 버튼 탭")
         delegate?.categoryViewDidSelectCategory(selectedCategory)
     }
 }

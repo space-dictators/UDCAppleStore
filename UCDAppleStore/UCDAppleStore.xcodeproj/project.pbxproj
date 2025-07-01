@@ -112,11 +112,13 @@
 				};
 			};
 			buildConfigurationList = B54BA76E2E0BD720001524C1 /* Build configuration list for PBXProject "UCDAppleStore" */;
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				ja,
+				ko,
 			);
 			mainGroup = B54BA76A2E0BD720001524C1;
 			minimizedProjectReferenceProxies = 1;

@@ -22,6 +22,19 @@ class CartViewController: UIViewController {
 
         cartView.cartCollectionView.isHidden = true
     }
+
+    func updateCart(items: [CartItem], totalPriceText: String, purchaseButtonTitle: String, isPurchaseEnabled: Bool) {
+        cartView.reloadCartUI(
+            items: items,
+            totalPriceText: totalPriceText,
+            purchaseButtonTitle: purchaseButtonTitle,
+            isPurchaseEnabled: isPurchaseEnabled
+        )
+    }
+
+    func setCartDelegate(_ delegate: CartViewDelegate) {
+        cartView.delegate = delegate
+    }
 }
 
 extension CartViewController: UISheetPresentationControllerDelegate {

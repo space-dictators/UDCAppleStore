@@ -85,7 +85,7 @@ class UCDButton: UIControl {
     private func updateBackgroundForSelection() {
         if case .category = style {
             if let categoryBackground = background as? CategoryBackgroundView {
-                categoryBackground.backgroundColor = isSelected ? .systemBlue : .cartCell
+                categoryBackground.backgroundColor = isSelected ? .systemBlue : .ucdCartCell
             }
         }
     }
@@ -96,7 +96,7 @@ extension UCDButton {
         override func willMove(toSuperview newSuperview: UIView?) {
             super.willMove(toSuperview: newSuperview)
             isUserInteractionEnabled = false
-            backgroundColor = .cartCell
+            backgroundColor = .ucdCartCell
             layer.cornerRadius = 16
         }
     }
@@ -105,7 +105,7 @@ extension UCDButton {
         override func willMove(toSuperview newSuperview: UIView?) {
             super.willMove(toSuperview: newSuperview)
             isUserInteractionEnabled = false
-            backgroundColor = .cancelButton
+            backgroundColor = .ucdClearButton
             layer.cornerRadius = 20
         }
     }
@@ -129,7 +129,7 @@ extension UCDButton {
         var titleColor: UIColor {
             switch self {
             case .category:
-                return .text
+                return .ucdText
             case .reset, .checkout:
                 return .white
             }

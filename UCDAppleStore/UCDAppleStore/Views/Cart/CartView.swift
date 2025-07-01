@@ -5,27 +5,20 @@ import SnapKit
 import Then
 
 class CartView: UIView {
-    // 테스트용 임시 카트뷰모델 생성
-    let cartViewModel = CartViewModel()
-
     // MARK: Properties
 
+    private var cartItems: [CartItem] = []
     weak var delegate: CartViewDelegate?
-
-    // MARK: Closuer
-
-    var onCartUpdated: (() -> Void)?
 
     // MARK: UI Components
 
     let totalPriceLabel = UILabel().then {
         $0.font = .boldSystemFont(ofSize: 20)
-        $0.textColor = UIColor(named: "TextColor")
+        $0.textColor = .ucdText
         $0.textAlignment = .right
     }
 
     let resetButton = UCDButton(style: .reset)
-
     let purchaseButton = UCDButton(style: .checkout)
 
     // TODO: UICollectionViewCompositionalLayout -> ListLayout으로 변경
@@ -48,14 +41,9 @@ class CartView: UIView {
         cartCollectionView.dataSource = self
         cartCollectionView.delegate = self
         setupView()
-        updateTotalPriceText()
-        updatePurchaseButtonTitle()
         resetButton.setTitle = .localized("초기화")
         resetButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         purchaseButton.addTarget(self, action: #selector(purchaseButtonTapped), for: .touchUpInside)
-        cartViewModel.onAlertTriggered = { [weak self] alertType in
-            self?.delegate?.cartViewShouldShowAlert(alertType)
-        }
     }
 
     @available(*, unavailable)
@@ -73,14 +61,14 @@ class CartView: UIView {
 
         // 1. 총합 레이블: 최상단에 고정
         totalPriceLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(16)
+            $0.top.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().inset(16)
         }
 
         // 2. 하단 버튼들: 아래에 고정
         resetButton.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(16)
-            $0.bottom.equalToSuperview().inset(16)
+            $0.bottom.equalToSuperview().inset(40)
             $0.trailing.equalTo(purchaseButton.snp.leading).offset(-8)
             $0.height.equalTo(44)
             $0.width.equalTo(purchaseButton)
@@ -88,7 +76,7 @@ class CartView: UIView {
 
         purchaseButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalToSuperview().inset(16)
+            $0.bottom.equalToSuperview().inset(40)
             $0.height.equalTo(44)
         }
 
@@ -102,21 +90,14 @@ class CartView: UIView {
 
     // MARK: Methods
 
-    func updatePurchaseButtonTitle() {
-        purchaseButton.setTitle = cartViewModel.purchaseButtonTitle
-        updatePurchaseButtonState()
-    }
-
-    func updateTotalPriceText() {
-        totalPriceLabel.text = cartViewModel.totalPriceText
-    }
-
     // 장바구니 리로드 함수 추가
-    func reloadCartUI() {
+    func reloadCartUI(items: [CartItem], totalPriceText: String, purchaseButtonTitle: String, isPurchaseEnabled: Bool) {
+        cartItems = items
         cartCollectionView.reloadData()
-        updateTotalPriceText()
-        updatePurchaseButtonTitle()
-        onCartUpdated?()
+        totalPriceLabel.text = totalPriceText
+        purchaseButton.setTitle = purchaseButtonTitle
+        purchaseButton.isEnabled = isPurchaseEnabled
+        purchaseButton.alpha = isPurchaseEnabled ? 1.0 : 0.5
     }
 
     // MARK: Actions
@@ -130,13 +111,6 @@ class CartView: UIView {
     private func purchaseButtonTapped() {
         // TODO: 프로토콜 구현시 연결
     }
-
-    // TODO: UCD 버튼스타일 통합시 스타일 메서드 적용으로 변경
-    func updatePurchaseButtonState() {
-        let isEnabled = cartViewModel.isPurchaseAvailable
-        purchaseButton.isEnabled = isEnabled
-        purchaseButton.alpha = isEnabled ? 1.0 : 0.5 // 투명도 조절
-    }
 }
 
 // MARK: Extension
@@ -145,7 +119,7 @@ extension CartView: UICollectionViewDataSource {
     // MARK: Setup Methods
 
     func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
-        return cartViewModel.cartItems.count
+        return cartItems.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -156,7 +130,7 @@ extension CartView: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
 
-        let item = cartViewModel.cartItems[indexPath.item]
+        let item = cartItems[indexPath.item]
         cell.configure(with: item)
         cell.onTapPlus = { [weak self] in
             self?.delegate?.cartCellDidIncreaseQuantity(for: item.product)

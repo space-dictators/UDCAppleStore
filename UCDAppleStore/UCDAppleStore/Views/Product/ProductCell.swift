@@ -11,6 +11,8 @@ import UIKit
 class ProductCell: UICollectionViewCell {
     private let productView = ProductView()
 
+    var onCartButtonTapped: (() -> Void)?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(productView)
@@ -20,8 +22,10 @@ class ProductCell: UICollectionViewCell {
         contentView.layer.borderColor = UIColor.systemGray4.cgColor
         contentView.layer.borderWidth = 1
         contentView.layer.cornerRadius = 8
-        contentView.backgroundColor = .cell
+        contentView.backgroundColor = .ucdCell
         contentView.clipsToBounds = true
+
+        setupAction()
     }
 
     @available(*, unavailable)
@@ -31,5 +35,11 @@ class ProductCell: UICollectionViewCell {
 
     func configure(with product: Product) {
         productView.configure(with: product)
+    }
+
+    private func setupAction() {
+        productView.onCartButtonTapped = { [weak self] in
+            self?.onCartButtonTapped?()
+        }
     }
 }
