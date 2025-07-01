@@ -100,7 +100,7 @@ class ProductView: UIView {
 
     func configure(with product: Product) {
         nameLabel.text = product.name
-        priceLabel.text = "\(product.price) 원"
+        priceLabel.text = .localized("\(product.price.formattedWithComma)원")
         imageView.loadImage(from: product.imageURL)
     }
 
