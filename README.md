@@ -24,15 +24,14 @@ MainViewController (중앙 허브)
 └── AlertSystem (Extension)
 ```
 #### 단방향 데이터 흐름
-- Delegate: 사용자 입력을 위로 전달 (View → ViewController)
-- Closure: 상태 변화를 아래로 알림 (ViewModel → ViewController → View)
+- **Delegate**: 사용자 입력을 위로 전달 (View → ViewController)
+- **Closure**: 상태 변화를 아래로 알림 (ViewModel → ViewController → View)
 
 #### 핵심 컴포넌트 역할
 
 **Models**
 - `Product`: 상품 정보 (id, name, category, price, imageURL)
 - `CartItem`: 장바구니 아이템 (product + quantity)
-- `Cart`: 장바구니 비즈니스 로직 (추가/삭제/수량 계산)
 - `Category`: 상품 카테고리 열거형
 - `CartAlertType`: Alert 타입 정의
 
@@ -60,7 +59,6 @@ UCDAppleStore/
 │   └── SceneDelegate.swift
 ├── Models/
 │   ├── Product.swift
-│   ├── Cart.swift
 │   ├── CartItem.swift
 │   ├── Category.swift
 │   └── CartAlertType.swift
@@ -103,8 +101,12 @@ UCDAppleStore/
     └── product.json
 ```
 
-## 역할 분담
-
+## 🏃 역할 분담
+| 팀원     | 역할                                                       |
+|----------|------------------------------------------------------------|
+| 윤승렬   | 장바구니 담당 (CartView, CartViewModel), 알림, 다국어 담당                                   |
+| 이서린   | 상품 목록 담당 (ProductListView, ProductViewModel)                         |
+| 양지영   | 아키텍처 설계, 카테고리, 장바구니 모달, 전체 연결 담당 (CategoryView, CategoryViewModel, MainViewController, DataService) |
 
 ## 🛠️ 기술 스택
 - Swift 5
