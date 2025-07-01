@@ -114,7 +114,7 @@ UCDAppleStore/
 |--------|------------------------------------|----------------|
 | 윤승렬 | 장바구니, 알림, 다국어             | CartView, CartViewModel |
 | 이서린 | 상품 목록                          | ProductListView, ProductViewModel |
-| 양지영 | 아키텍처 설계, 카테고리, 전체 연결 | CategoryView, CategoryViewModel, MainViewController, DataService |
+| 양지영 | 아키텍처 설계, 카테고리, 전체 연결 | CategoryView, CategoryViewModel, MainViewController|
 
 
 ## 🛠️ 기술 스택
