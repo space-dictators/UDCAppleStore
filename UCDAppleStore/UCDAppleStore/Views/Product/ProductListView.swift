@@ -62,7 +62,7 @@ class ProductListView: UIView {
         }
 
         pageControl.snp.makeConstraints {
-            $0.bottom.equalTo(safeAreaLayoutGuide).inset(220)
+            $0.bottom.equalTo(safeAreaLayoutGuide).inset(200)
             $0.centerX.equalToSuperview()
             $0.height.equalTo(20)
         }
