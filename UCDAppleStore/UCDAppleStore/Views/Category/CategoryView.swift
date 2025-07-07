@@ -63,7 +63,7 @@ class CategoryView: UIView {
 
         for (index, category) in categories.enumerated() {
             let button = UCDButton(style: .category).then {
-                $0.setTitle = category.titleName
+                $0.setTitle = category.rawValue
                 $0.tag = index
                 $0.addTarget(
                     self,
