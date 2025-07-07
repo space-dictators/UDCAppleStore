@@ -18,15 +18,23 @@ class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupViews()
         bindViewModels()
         loadInitialData()
+        setupViews()
         presentCartView()
     }
 
     // MARK: - Private Methods
 
     private func bindViewModels() {
+        categoryViewModel.onCategoriesLoaded = { [weak self] categories in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.categoryView.updateCategories(categories)
+                self.categoryView.updateUI(selectedCategory: self.categoryViewModel.selectedCategory)
+            }
+        }
+
         categoryViewModel.onCategoryChanged = { [weak self] category in
             DispatchQueue.main.async {
                 self?.categoryView.updateUI(selectedCategory: category)
@@ -55,6 +63,7 @@ class MainViewController: UIViewController {
     }
 
     private func loadInitialData() {
+        categoryViewModel.loadCategories()
         productViewModel.fetchProducts()
         productViewModel.filterProducts(by: categoryViewModel.selectedCategory)
     }
@@ -83,7 +92,6 @@ class MainViewController: UIViewController {
             $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(44)
         }
-        categoryView.updateUI(selectedCategory: categoryViewModel.selectedCategory)
     }
 
     private func setupProductListView() {

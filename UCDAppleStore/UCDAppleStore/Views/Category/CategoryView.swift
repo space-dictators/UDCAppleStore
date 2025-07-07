@@ -5,7 +5,7 @@ import UIKit
 class CategoryView: UIView {
     // MARK: - Properties
 
-    private var categories: [Category] = Category.allCategories
+    private var categories: [Category] = []
     private var categoryButtons: [UCDButton] = []
 
     weak var delegate: CategoryViewDelegate?
@@ -74,6 +74,11 @@ class CategoryView: UIView {
             categoryButtons.append(button)
             stackView.addArrangedSubview(button)
         }
+    }
+
+    func updateCategories(_ categories: [Category]) {
+        self.categories = categories
+        createCategoryButtons()
     }
 
     func updateUI(selectedCategory: Category) {

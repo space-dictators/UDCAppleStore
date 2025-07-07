@@ -6,8 +6,4 @@ enum Category: String, Codable, CaseIterable {
     case macBook = "MacBook"
     case mac = "Mac"
     case accessories = "Accessories"
-
-    static var allCategories: [Category] {
-        return Category.allCases
-    }
 }
