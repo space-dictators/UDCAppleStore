@@ -51,7 +51,6 @@ class CategoryView: UIView {
 
         stackView.snp.makeConstraints {
             $0.horizontalEdges.height.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(20)
         }
     }
 
