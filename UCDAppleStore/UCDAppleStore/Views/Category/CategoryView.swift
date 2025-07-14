@@ -5,7 +5,7 @@ import UIKit
 class CategoryView: UIView {
     // MARK: - Properties
 
-    private var categories: [Category] = Category.allCategories
+    private var categories: [Category] = []
     private var categoryButtons: [UCDButton] = []
 
     weak var delegate: CategoryViewDelegate?
@@ -51,7 +51,6 @@ class CategoryView: UIView {
 
         stackView.snp.makeConstraints {
             $0.horizontalEdges.height.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(20)
         }
     }
 
@@ -63,7 +62,7 @@ class CategoryView: UIView {
 
         for (index, category) in categories.enumerated() {
             let button = UCDButton(style: .category).then {
-                $0.setTitle = category.titleName
+                $0.setTitle = category.rawValue
                 $0.tag = index
                 $0.addTarget(
                     self,
@@ -74,6 +73,11 @@ class CategoryView: UIView {
             categoryButtons.append(button)
             stackView.addArrangedSubview(button)
         }
+    }
+
+    func updateCategories(_ categories: [Category]) {
+        self.categories = categories
+        createCategoryButtons()
     }
 
     func updateUI(selectedCategory: Category) {
