@@ -33,9 +33,11 @@ final class BookIndexBarView: UIView {
         // 오토 레이아웃
         stackView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
-            $0.leading.greaterThanOrEqualToSuperview().offset(20)
-            $0.trailing.lessThanOrEqualToSuperview().offset(-20)
-            $0.centerX.equalToSuperview()
+            // greaterThan/lessThan 결정이 안된 값
+            // 안에서도 결정이 안된값을 줘서 오토 레이아웃이 모호하게 됐다.
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.centerX.equalToSuperview() // 여기?
         }
     }
 
